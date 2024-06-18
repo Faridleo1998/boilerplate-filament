@@ -1,0 +1,4 @@
+{
+    "*.{css,json,js}": ["prettier --write"],
+    "**/*.php*": ["./vendor/bin/duster fix --dirty"]
+}
