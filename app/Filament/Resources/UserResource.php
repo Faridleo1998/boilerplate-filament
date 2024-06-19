@@ -160,12 +160,7 @@ class UserResource extends Resource
                 Tables\Actions\DeleteBulkAction::make(),
             ])
             ->checkIfRecordIsSelectableUsing(
-                function (Model $record): bool {
-                    $isNotSuperAdmin = $record->id !== 1;
-                    $isNotSelf = $record->id !== auth()->user()->id;
-
-                    return $isNotSuperAdmin && $isNotSelf;
-                }
+                fn (User $record): bool => Gate::allows('delete', [$record])
             )
             ->defaultSort('created_at', 'asc');
     }
