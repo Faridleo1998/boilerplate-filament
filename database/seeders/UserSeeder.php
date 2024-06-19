@@ -10,9 +10,13 @@ class UserSeeder extends Seeder
 {
     public function run(): void
     {
-        User::create([
-            'name' => 'Super Admin',
+        $superAdmin = User::create([
+            'identification_number' => '0000000000',
+            'full_name' => 'Super Admin',
+            'phone_number' => '0000000000',
             'email' => 'super_admin@gmail.com',
+            'birth_date' => now(),
+            'email_verified_at' => now(),
             'password' => app()->environment('local')
                 ? Hash::make('admin')
                 : Hash::make("B0ilerplate@{${now()->year()}}*"),
@@ -20,12 +24,18 @@ class UserSeeder extends Seeder
 
         if (app()->environment('local')) {
             User::create([
-                'name' => 'Test Test',
+                'identification_number' => '111111111',
+                'full_name' => 'Test Test',
+                'phone_number' => '111111111',
                 'email' => 'test@gmail.com',
+                'email_verified_at' => now(),
                 'password' => Hash::make('test'),
+                'created_by' => $superAdmin->id,
             ]);
 
-            User::factory(10)->create();
+            User::factory(10)->create([
+                'created_by' => $superAdmin->id,
+            ]);
         }
     }
 }
