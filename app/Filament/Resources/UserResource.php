@@ -155,8 +155,7 @@ class UserResource extends Resource
                     ->options(UserStatus::class),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make()
-                    ->hidden(Gate::allows('update', static::getModel())),
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])

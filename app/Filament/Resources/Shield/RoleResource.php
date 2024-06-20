@@ -110,10 +110,7 @@ class RoleResource extends Resource implements HasShieldPermissions
                     ->dateTime(),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make()
-                    ->hidden(
-                        fn (Role $record) => Gate::allows('update', [$record])
-                    ),
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])

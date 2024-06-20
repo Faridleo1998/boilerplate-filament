@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Support\Facades\Gate;
 use Spatie\Permission\Models\Role;
 
 class RolePolicy
@@ -15,9 +16,12 @@ class RolePolicy
         return $user->can('view_any_shield::role');
     }
 
-    public function view(User $user): bool
+    public function view(User $user, Role $role): bool
     {
-        return $user->can('view_shield::role');
+        $canView = $user->can('view_shield::role');
+        $canNotUpdate = Gate::denies('update', [$role]);
+
+        return $canView && $canNotUpdate;
     }
 
     public function create(User $user): bool
@@ -31,7 +35,7 @@ class RolePolicy
         $userHasRole = $user->hasRole($role->name);
         $canUpdate = $user->can('update_shield::role');
 
-        return $isNotSuperAdmin && $canUpdate && ! $userHasRole;
+        return $canUpdate && $isNotSuperAdmin && ! $userHasRole;
     }
 
     public function delete(User $user, Role $role): bool

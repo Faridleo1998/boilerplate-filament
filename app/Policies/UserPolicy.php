@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Support\Facades\Gate;
 
 class UserPolicy
 {
@@ -16,7 +17,10 @@ class UserPolicy
 
     public function view(User $user): bool
     {
-        return $user->can('view_user');
+        $canView = $user->can('view_user');
+        $canNotUpdate = Gate::denies('update', User::class);
+
+        return $canView && $canNotUpdate;
     }
 
     public function create(User $user): bool
@@ -31,11 +35,11 @@ class UserPolicy
 
     public function delete(User $user, User $record): bool
     {
-        $canDeleteUser = $user->can('delete_user');
+        $canDelete = $user->can('delete_user');
         $isNotSelf = $record->id !== $user->id;
         $isNotSuperAdmin = $record->id !== 1;
 
-        return $canDeleteUser && $isNotSelf && $isNotSuperAdmin;
+        return $canDelete && $isNotSelf && $isNotSuperAdmin;
     }
 
     public function deleteAny(User $user): bool
