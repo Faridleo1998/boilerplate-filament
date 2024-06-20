@@ -20,7 +20,7 @@ class UserResource extends Resource implements HasShieldPermissions
 {
     protected static ?string $model = User::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-user-group';
 
     public static function getPermissionPrefixes(): array
     {
@@ -187,6 +187,11 @@ class UserResource extends Resource implements HasShieldPermissions
         return [
             'index' => Pages\ManageUsers::route('/'),
         ];
+    }
+
+    public static function getLabel(): string
+    {
+        return __('resources.user.singular_label');
     }
 
     public static function getNavigationBadge(): ?string
