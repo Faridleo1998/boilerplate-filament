@@ -38,9 +38,11 @@ class UserResource extends Resource implements HasShieldPermissions
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('Personal Information')
+                Forms\Components\Section::make(__('resources.user.sections.personal_information'))
+                    ->icon('heroicon-o-user')
                     ->schema([
                         Forms\Components\TextInput::make('identification_number')
+                            ->label(__('labels.identification_number'))
                             ->required()
                             ->maxLength(20)
                             ->unique(ignoreRecord: true)
@@ -48,12 +50,14 @@ class UserResource extends Resource implements HasShieldPermissions
                                 fn (?Model $record): bool => $record?->id === 1
                             ),
                         Forms\Components\TextInput::make('full_name')
+                            ->label(__('labels.full_name'))
                             ->required()
                             ->maxLength(255)
                             ->disabled(
                                 fn (?Model $record): bool => $record?->id === 1
                             ),
                         Forms\Components\DatePicker::make('birth_date')
+                            ->label(__('labels.birth_date'))
                             ->maxDate(now())
                             ->disabled(
                                 fn (?Model $record): bool => $record?->id === 1
@@ -63,9 +67,11 @@ class UserResource extends Resource implements HasShieldPermissions
                         '2xl' => 3,
                     ])
                     ->collapsible(),
-                Forms\Components\Section::make('Contact Information')
+                Forms\Components\Section::make(__('resources.user.sections.contact_information'))
+                    ->icon('icon-address-book')
                     ->schema([
                         Forms\Components\TextInput::make('email')
+                            ->label(__('labels.email'))
                             ->required()
                             ->email()
                             ->maxLength(255)
@@ -74,12 +80,14 @@ class UserResource extends Resource implements HasShieldPermissions
                                 fn (?Model $record): bool => $record?->id === 1
                             ),
                         Forms\Components\TextInput::make('phone_number')
+                            ->label(__('labels.phone_number'))
                             ->required()
                             ->maxLength(20)
                             ->disabled(
                                 fn (?Model $record): bool => $record?->id === 1
                             ),
                         Forms\Components\TextInput::make('address')
+                            ->label(__('labels.address'))
                             ->maxLength(255)
                             ->disabled(
                                 fn (?Model $record): bool => $record?->id === 1
@@ -89,14 +97,17 @@ class UserResource extends Resource implements HasShieldPermissions
                         '2xl' => 3,
                     ])
                     ->collapsible(),
-                Forms\Components\Section::make('Account Information')
+                Forms\Components\Section::make(__('resources.user.sections.account_information'))
+                    ->icon('heroicon-o-user-circle')
                     ->schema([
                         Forms\Components\Toggle::make('status')
+                            ->label(__('labels.status'))
                             ->default(true)
                             ->disabled(
                                 fn (?Model $record): bool => $record?->id === 1
                             ),
                         Forms\Components\TextInput::make('password')
+                            ->label(__('labels.password'))
                             ->required(
                                 fn (string $context): bool => $context === 'create'
                             )
@@ -137,29 +148,38 @@ class UserResource extends Resource implements HasShieldPermissions
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('identification_number')
+                    ->label(__('labels.identification_number'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('full_name')
+                    ->label(__('labels.full_name'))
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('phone_number')
+                    ->label(__('labels.phone_number'))
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('status')
+                    ->label(__('labels.status'))
                     ->badge(),
                 Tables\Columns\TextColumn::make('email')
+                    ->label(__('labels.email'))
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('roles_count')
+                    ->label(__('resources.user.labels.roles_count'))
                     ->counts('roles')
                     ->badge()
                     ->color('success'),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label(__('labels.created_at'))
                     ->dateTime()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('createdBy.full_name')
+                    ->label(__('labels.created_by'))
                     ->placeholder('-')
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->label(__('labels.updated_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
