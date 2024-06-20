@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Enums\UserStatus;
+use App\Enums\Status;
 use App\Traits\Models\HasCreatedBy;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasName;
@@ -35,7 +35,7 @@ class User extends Authenticatable implements FilamentUser, HasName
 
     public function canAccessPanel(Panel $panel): bool
     {
-        return $this->status === UserStatus::ACTIVE;
+        return $this->status === Status::ACTIVE;
     }
 
     public function getFilamentName(): string
@@ -52,7 +52,7 @@ class User extends Authenticatable implements FilamentUser, HasName
     protected function casts(): array
     {
         return [
-            'status' => UserStatus::class,
+            'status' => Status::class,
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];

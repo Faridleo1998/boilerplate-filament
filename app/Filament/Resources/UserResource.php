@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources;
 
-use App\Enums\UserStatus;
+use App\Enums\Status;
 use App\Filament\Resources\UserResource\Pages;
 use App\Models\User;
 use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
@@ -166,7 +166,7 @@ class UserResource extends Resource implements HasShieldPermissions
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
-                    ->options(UserStatus::class),
+                    ->options(Status::class),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
