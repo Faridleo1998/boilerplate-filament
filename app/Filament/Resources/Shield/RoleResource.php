@@ -302,14 +302,14 @@ class RoleResource extends Resource implements HasShieldPermissions
         return static::shield()->hasSimpleResourcePermissionView()
             ? static::getTabFormComponentForSimpleResourcePermissionsView()
             : Forms\Components\Tabs\Tab::make('resources')
-                ->label(__('filament-shield::filament-shield.resources'))
-                ->visible(fn (): bool => (bool) Utils::isResourceEntityEnabled())
-                ->badge(static::getResourceTabBadgeCount())
-                ->schema([
-                    Forms\Components\Grid::make()
-                        ->schema(static::getResourceEntitiesSchema())
-                        ->columns(static::shield()->getGridColumns()),
-                ]);
+            ->label(__('filament-shield::filament-shield.resources'))
+            ->visible(fn (): bool => (bool) Utils::isResourceEntityEnabled())
+            ->badge(static::getResourceTabBadgeCount())
+            ->schema([
+                Forms\Components\Grid::make()
+                    ->schema(static::getResourceEntitiesSchema())
+                    ->columns(static::shield()->getGridColumns()),
+            ]);
     }
 
     public static function getCheckBoxListComponentForResource(array $entity): Component
@@ -389,7 +389,7 @@ class RoleResource extends Resource implements HasShieldPermissions
                     record: $record
                 )
             )
-            ->dehydrated(fn ($state) => ! blank($state))
+            ->dehydrated(fn ($state) => !blank($state))
             ->bulkToggleable()
             ->gridDirection('row')
             ->columns(static::shield()->getCheckboxListColumns())
