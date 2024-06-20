@@ -134,7 +134,8 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('status')
                     ->badge(),
                 Tables\Columns\TextColumn::make('email')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('roles_count')
                     ->counts('roles')
                     ->badge()

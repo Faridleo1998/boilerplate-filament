@@ -99,7 +99,8 @@ class RoleResource extends Resource implements HasShieldPermissions
                     ->label(__('filament-shield::filament-shield.column.name'))
                     ->formatStateUsing(fn ($state): string => Str::headline($state))
                     ->colors(['primary'])
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('permissions_count')
                     ->badge()
                     ->label(__('filament-shield::filament-shield.column.permissions'))
@@ -107,7 +108,8 @@ class RoleResource extends Resource implements HasShieldPermissions
                     ->colors(['success']),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->label(__('filament-shield::filament-shield.column.updated_at'))
-                    ->dateTime(),
+                    ->dateTime()
+                    ->sortable(),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
@@ -302,14 +304,14 @@ class RoleResource extends Resource implements HasShieldPermissions
         return static::shield()->hasSimpleResourcePermissionView()
             ? static::getTabFormComponentForSimpleResourcePermissionsView()
             : Forms\Components\Tabs\Tab::make('resources')
-            ->label(__('filament-shield::filament-shield.resources'))
-            ->visible(fn (): bool => (bool) Utils::isResourceEntityEnabled())
-            ->badge(static::getResourceTabBadgeCount())
-            ->schema([
-                Forms\Components\Grid::make()
-                    ->schema(static::getResourceEntitiesSchema())
-                    ->columns(static::shield()->getGridColumns()),
-            ]);
+                ->label(__('filament-shield::filament-shield.resources'))
+                ->visible(fn (): bool => (bool) Utils::isResourceEntityEnabled())
+                ->badge(static::getResourceTabBadgeCount())
+                ->schema([
+                    Forms\Components\Grid::make()
+                        ->schema(static::getResourceEntitiesSchema())
+                        ->columns(static::shield()->getGridColumns()),
+                ]);
     }
 
     public static function getCheckBoxListComponentForResource(array $entity): Component
@@ -389,7 +391,7 @@ class RoleResource extends Resource implements HasShieldPermissions
                     record: $record
                 )
             )
-            ->dehydrated(fn ($state) => !blank($state))
+            ->dehydrated(fn ($state) => ! blank($state))
             ->bulkToggleable()
             ->gridDirection('row')
             ->columns(static::shield()->getCheckboxListColumns())
