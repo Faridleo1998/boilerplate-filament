@@ -13,8 +13,8 @@ enum UserStatus: int implements HasColor, HasLabel
     public function getLabel(): ?string
     {
         return match ($this) {
-            self::INACTIVE => 'Inactive',
-            self::ACTIVE => 'Active',
+            self::INACTIVE => __('enums/status.inactive'),
+            self::ACTIVE => __('enums/status.active'),
         };
     }
 
