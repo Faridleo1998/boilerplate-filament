@@ -22,6 +22,8 @@ class UserResource extends Resource implements HasShieldPermissions
 
     protected static ?string $navigationGroup = 'Settings';
 
+    protected static ?int $navigationSort = 2;
+
     public static function getPermissionPrefixes(): array
     {
         return [

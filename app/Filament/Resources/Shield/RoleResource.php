@@ -27,6 +27,8 @@ class RoleResource extends Resource implements HasShieldPermissions
 
     protected static ?string $navigationGroup = 'Settings';
 
+    protected static ?int $navigationSort = 3;
+
     public static function getEloquentQuery(): Builder
     {
         return auth()->user()->id !== 1
@@ -169,11 +171,6 @@ class RoleResource extends Resource implements HasShieldPermissions
     public static function getNavigationLabel(): string
     {
         return __('filament-shield::filament-shield.nav.role.label');
-    }
-
-    public static function getNavigationSort(): ?int
-    {
-        return 1;
     }
 
     public static function getSlug(): string
