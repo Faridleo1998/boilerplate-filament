@@ -56,10 +56,10 @@ class EditSetting extends Page implements HasForms
                             ->schema([
                                 Forms\Components\FileUpload::make('logo')
                                     ->image()
+                                    ->optimize('webp')
                                     ->imageEditor()
                                     ->getUploadedFileNameForStorageUsing(
-                                        fn (TemporaryUploadedFile $file): string => (string) str($file->extension())
-                                            ->prepend('logo.'),
+                                        fn (): string => 'logo.webp'
                                     ),
                                 Forms\Components\TextInput::make('identification_number')
                                     ->label(__('resources.setting.labels.identification_number'))
@@ -111,9 +111,9 @@ class EditSetting extends Page implements HasForms
         try {
             $data = $this->form->getState();
 
-            if (! $data['logo']) {
-                if (file_exists(storage_path('logo.jpg'))) {
-                    Storage::disk('public')->delete('logo.jpg');
+            if (!$data['logo']) {
+                if (file_exists(public_path('storage/logo.webp'))) {
+                    Storage::disk('public')->delete('logo.webp');
                 }
             }
 

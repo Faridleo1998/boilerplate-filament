@@ -29,8 +29,8 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->brandLogo(function () {
-                if (file_exists(public_path('storage/logo.jpg'))) {
-                    return env('APP_URL') . '/storage/logo.jpg';
+                if (file_exists(public_path('storage/logo.webp'))) {
+                    return env('APP_URL') . '/storage/logo.webp';
                 }
 
                 return null;
