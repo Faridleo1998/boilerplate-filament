@@ -13,7 +13,6 @@ use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Filament\Support\Exceptions\Halt;
 use Illuminate\Support\Facades\Storage;
-use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class EditSetting extends Page implements HasForms
 {
@@ -30,6 +29,11 @@ class EditSetting extends Page implements HasForms
     public static function getNavigationLabel(): string
     {
         return __('resources.setting.singular_label');
+    }
+
+    public static function getSlug(): string
+    {
+        return strtolower(__('resources.setting.singular_label'));
     }
 
     public function getTitle(): string
@@ -111,7 +115,7 @@ class EditSetting extends Page implements HasForms
         try {
             $data = $this->form->getState();
 
-            if (!$data['logo']) {
+            if (! $data['logo']) {
                 if (file_exists(public_path('storage/logo.webp'))) {
                     Storage::disk('public')->delete('logo.webp');
                 }

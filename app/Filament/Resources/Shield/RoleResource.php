@@ -175,7 +175,7 @@ class RoleResource extends Resource implements HasShieldPermissions
 
     public static function getSlug(): string
     {
-        return Utils::getResourceSlug();
+        return strtolower(static::getPluralModelLabel());
     }
 
     public static function getNavigationBadge(): ?string
