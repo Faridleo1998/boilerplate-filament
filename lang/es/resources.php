@@ -1,6 +1,20 @@
 <?php
 
 return [
+    'setting' => [
+        'singular_label' => 'General',
+        'tabs' => [
+            'application' => 'Aplicación',
+            'social_networks' => 'Redes sociales',
+        ],
+        'labels' => [
+            'identification_number' => 'NIT',
+            'name' => 'Nombre',
+            'email' => 'Correo electrónico',
+            'phone_number' => 'Teléfono',
+            'address' => 'Dirección',
+        ],
+    ],
     'user' => [
         'singular_label' => 'Usuario',
         'labels' => [
