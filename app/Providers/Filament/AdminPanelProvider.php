@@ -3,6 +3,7 @@
 namespace App\Providers\Filament;
 
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
+use Filament\Facades\Filament;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -28,6 +29,14 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
+            ->brandLogo(function () {
+                if (file_exists(public_path('storage/logo.jpg'))) {
+                    return env('APP_URL') . '/storage/logo.jpg';
+                }
+
+                return null;
+            })
+            ->brandLogoHeight('3rem')
             ->login()
             ->profile()
             ->breadcrumbs(false)
