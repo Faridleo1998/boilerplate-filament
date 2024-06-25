@@ -26,6 +26,11 @@ class EditSetting extends Page implements HasForms
 
     public ?array $data = [];
 
+    public static function canAccess(): bool
+    {
+        return auth()->user()->id === 1;
+    }
+
     public static function getNavigationLabel(): string
     {
         return __('resources.setting.singular_label');
