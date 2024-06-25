@@ -262,13 +262,24 @@ class RoleResource extends Resource implements HasShieldPermissions
 
     public static function getPageOptions(): array
     {
-        return collect(FilamentShield::getPages())
+        $pages = collect(FilamentShield::getPages())
             ->flatMap(fn ($page) => [
                 $page['permission'] => static::shield()->hasLocalizedPermissionLabels()
                     ? FilamentShield::getLocalizedPageLabel($page['class'])
                     : $page['permission'],
             ])
             ->toArray();
+
+        $pages = static::unsetPages($pages);
+
+        return $pages;
+    }
+
+    public static function unsetPages(array $pages): array
+    {
+        unset($pages['page_EditSetting']);
+
+        return $pages;
     }
 
     public static function getWidgetOptions(): array
