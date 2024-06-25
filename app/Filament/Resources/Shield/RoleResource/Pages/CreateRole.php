@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Shield\RoleResource\Pages;
 
 use App\Filament\Resources\Shield\RoleResource;
+use App\Traits\SanitizeFields;
 use BezhanSalleh\FilamentShield\Support\Utils;
 use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Support\Arr;
@@ -10,6 +11,8 @@ use Illuminate\Support\Collection;
 
 class CreateRole extends CreateRecord
 {
+    use SanitizeFields;
+
     protected static string $resource = RoleResource::class;
 
     protected static bool $canCreateAnother = false;
@@ -25,6 +28,9 @@ class CreateRole extends CreateRecord
             ->values()
             ->flatten()
             ->unique();
+
+        $data = $this->sanitize($data, ['name']);
+        $data['name'] = ucfirst(strtolower($data['name']));
 
         return Arr::only($data, ['name', 'guard_name']);
     }

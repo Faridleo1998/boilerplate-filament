@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Shield\RoleResource\Pages;
 
 use App\Filament\Resources\Shield\RoleResource;
+use App\Traits\SanitizeFields;
 use BezhanSalleh\FilamentShield\Support\Utils;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
@@ -11,6 +12,8 @@ use Illuminate\Support\Collection;
 
 class EditRole extends EditRecord
 {
+    use SanitizeFields;
+
     protected static string $resource = RoleResource::class;
 
     public Collection $permissions;
@@ -31,6 +34,9 @@ class EditRole extends EditRecord
             ->values()
             ->flatten()
             ->unique();
+
+        $data = $this->sanitize($data, ['name']);
+        $data['name'] = ucfirst(strtolower($data['name']));
 
         return Arr::only($data, ['name', 'guard_name']);
     }

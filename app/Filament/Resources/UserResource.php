@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Enums\Status;
 use App\Filament\Resources\UserResource\Pages;
+use App\Filament\Resources\UserResource\Pages\ManageUsers;
 use App\Models\User;
 use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use Filament\Forms;
@@ -192,7 +193,12 @@ class UserResource extends Resource implements HasShieldPermissions
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->mutateFormDataUsing(function (array $data, ManageUsers $manageUsers): array {
+                        $data = $manageUsers->sanitizeData($data);
+
+                        return $data;
+                    }),
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
