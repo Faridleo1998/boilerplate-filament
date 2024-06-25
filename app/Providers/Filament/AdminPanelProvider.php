@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Models\Setting;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -29,6 +30,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->spa()
+            ->brandName(Setting::first()?->name ?? config('app.name'))
             ->brandLogo(function () {
                 if (file_exists(public_path('storage/logo.webp'))) {
                     return env('APP_URL') . '/storage/logo.webp';
