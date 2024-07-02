@@ -16,6 +16,9 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
+use Ysfkaya\FilamentPhoneInput\Forms\PhoneInput;
+use Ysfkaya\FilamentPhoneInput\PhoneInputNumberType;
+use Ysfkaya\FilamentPhoneInput\Tables\PhoneColumn;
 
 class UserResource extends Resource implements HasShieldPermissions
 {
@@ -82,10 +85,9 @@ class UserResource extends Resource implements HasShieldPermissions
                             ->disabled(
                                 fn (?Model $record): bool => $record?->id === 1
                             ),
-                        Forms\Components\TextInput::make('phone_number')
-                            ->label(__('labels.phone_number'))
-                            ->required()
-                            ->maxLength(20)
+                        PhoneInput::make('phone')
+                            ->label(__('labels.phone'))
+                            ->displayNumberFormat(PhoneInputNumberType::E164)
                             ->disabled(
                                 fn (?Model $record): bool => $record?->id === 1
                             ),
@@ -157,8 +159,9 @@ class UserResource extends Resource implements HasShieldPermissions
                     ->label(__('labels.full_name'))
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('phone_number')
-                    ->label(__('labels.phone_number'))
+                PhoneColumn::make('phone')
+                    ->displayFormat(PhoneInputNumberType::E164)
+                    ->label(__('labels.phone'))
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('status')
@@ -189,6 +192,7 @@ class UserResource extends Resource implements HasShieldPermissions
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
+                    ->label(__('labels.status'))
                     ->options(Status::class),
             ])
             ->actions([
