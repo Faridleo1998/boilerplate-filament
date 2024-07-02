@@ -13,7 +13,7 @@ class UserSeeder extends Seeder
         $superAdmin = User::create([
             'identification_number' => '0000000000',
             'full_name' => 'Super Admin',
-            'phone_number' => '0000000000',
+            'phone' => '0000000000',
             'email' => 'super_admin@gmail.com',
             'birth_date' => now(),
             'email_verified_at' => now(),
@@ -26,7 +26,7 @@ class UserSeeder extends Seeder
             User::create([
                 'identification_number' => '111111111',
                 'full_name' => 'Test Test',
-                'phone_number' => '111111111',
+                'phone' => '111111111',
                 'email' => 'test@gmail.com',
                 'email_verified_at' => now(),
                 'password' => Hash::make('test'),

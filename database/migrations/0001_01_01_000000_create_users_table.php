@@ -14,7 +14,7 @@ return new class extends Migration
             $table->string('identification_number', 20)->unique();
             $table->string('full_name', 255);
             $table->date('birth_date')->nullable();
-            $table->string('phone_number', 20);
+            $table->string('phone', 20)->nullable();
             $table->string('address', 255)->nullable();
             $table->string('email')->unique();
             $table->boolean('status')->default(Status::ACTIVE);

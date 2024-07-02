@@ -15,7 +15,7 @@ class UserFactory extends Factory
         return [
             'identification_number' => fake()->unique()->numerify('##########'),
             'full_name' => fake()->name(),
-            'phone_number' => fake()->numerify('##########'),
+            'phone' => fake()->numerify('##########'),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
