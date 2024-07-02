@@ -1,6 +1,20 @@
 <?php
 
 return [
+    'customer' => [
+        'singular_label' => 'Cliente',
+        'labels' => [
+            'names' => 'Nombre(s)',
+            'last_names' => 'Apellido(s)',
+            'identification_type' => 'Tipo de identificación',
+            'full_name' => 'Nombre completo',
+            'is_featured' => 'Destacado',
+        ],
+        'sections' => [
+            'personal_information' => 'Información personal',
+            'contact_information' => 'Información de contacto',
+        ],
+    ],
     'setting' => [
         'singular_label' => 'General',
         'tabs' => [

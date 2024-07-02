@@ -2,6 +2,7 @@
 
 return [
     'address' => 'Dirección',
+    'born_date' => 'Fecha de nacimiento',
     'birth_date' => 'Fecha de cumpleaños',
     'created_at' => 'Fecha de creación',
     'created_by' => 'Creado por',
@@ -10,7 +11,7 @@ return [
     'identification_number' => 'Identificación',
     'name' => 'Nombre',
     'password' => 'Contraseña',
-    'phone_number' => 'Teléfono',
+    'phone' => 'Teléfono',
     'status' => 'Estado',
     'updated_at' => 'Fecha de actualización',
 ];
