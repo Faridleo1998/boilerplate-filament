@@ -16,7 +16,8 @@
         "laravel/framework": "^11.9",
         "laravel/tinker": "^2.9",
         "livewire/livewire": "^3.5",
-        "nnjeim/world": "^1.1"
+        "nnjeim/world": "^1.1",
+        "ysfkaya/filament-phone-input": "^2.3"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
