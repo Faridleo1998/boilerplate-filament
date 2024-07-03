@@ -8,9 +8,7 @@ return [
     | value in the allowed_countries array
     |--------------------------------------------------------------------------
     */
-    'allowed_countries' => [
-        'CO',
-    ],
+    'allowed_countries' => [],
 
     /*
     |--------------------------------------------------------------------------
@@ -55,9 +53,9 @@ return [
     'modules' => [
         'states' => true,
         'cities' => true,
-        'timezones' => false,
-        'currencies' => false,
-        'languages' => false,
+        'timezones' => true,
+        'currencies' => true,
+        'languages' => true,
     ],
     /*
     |--------------------------------------------------------------------------
@@ -90,6 +88,34 @@ return [
                     'type' => 'string',
                     'length' => 3,
                 ],
+                'native' => [
+                    'required' => false,
+                    'type' => 'string',
+                ],
+                'region' => [
+                    'required' => true,
+                    'type' => 'string',
+                ],
+                'subregion' => [
+                    'required' => true,
+                    'type' => 'string',
+                ],
+                'latitude' => [
+                    'required' => false,
+                    'type' => 'string',
+                ],
+                'longitude' => [
+                    'required' => false,
+                    'type' => 'string',
+                ],
+                'emoji' => [
+                    'required' => false,
+                    'type' => 'string',
+                ],
+                'emojiU' => [
+                    'required' => false,
+                    'type' => 'string',
+                ],
             ],
         ],
         'states' => [
@@ -105,6 +131,18 @@ return [
                     'type' => 'string',
                     'length' => 5,
                 ],
+                'type' => [
+                    'required' => false,
+                    'type' => 'string',
+                ],
+                'latitude' => [
+                    'required' => false,
+                    'type' => 'string',
+                ],
+                'longitude' => [
+                    'required' => false,
+                    'type' => 'string',
+                ],
             ],
         ],
         'cities' => [
@@ -119,6 +157,14 @@ return [
                     'required' => false,
                     'type' => 'string',
                     'length' => 5,
+                ],
+                'latitude' => [
+                    'required' => false,
+                    'type' => 'string',
+                ],
+                'longitude' => [
+                    'required' => false,
+                    'type' => 'string',
                 ],
             ],
         ],
