@@ -60,4 +60,11 @@ class Customer extends Model
             get: fn () => "{$this->names} {$this->last_names}",
         );
     }
+
+    protected function email(): Attribute
+    {
+        return new Attribute(
+            set: fn ($value) => strtolower($value),
+        );
+    }
 }
