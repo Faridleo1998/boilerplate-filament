@@ -58,7 +58,6 @@ class CustomerResource extends Resource implements HasShieldPermissions
                             ->label(__('labels.identification_number'))
                             ->required()
                             ->minLength(6)
-                            ->regex('/^[0-9-]+$/i')
                             ->autocomplete('off'),
                         Forms\Components\TextInput::make('names')
                             ->label(__('resources.customer.labels.names'))
