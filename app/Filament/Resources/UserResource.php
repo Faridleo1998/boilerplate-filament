@@ -70,7 +70,8 @@ class UserResource extends Resource implements HasShieldPermissions
                             ),
                     ])
                     ->columns([
-                        '2xl' => 3,
+                        'sm' => 2,
+                        'md' => 3,
                     ])
                     ->collapsible(),
                 Forms\Components\Section::make(__('resources.user.sections.contact_information'))
@@ -99,7 +100,8 @@ class UserResource extends Resource implements HasShieldPermissions
                             ),
                     ])
                     ->columns([
-                        '2xl' => 3,
+                        'sm' => 2,
+                        'md' => 3,
                     ])
                     ->collapsible(),
                 Forms\Components\Section::make(__('resources.user.sections.account_information'))
@@ -108,6 +110,7 @@ class UserResource extends Resource implements HasShieldPermissions
                         Forms\Components\Toggle::make('status')
                             ->label(__('labels.status'))
                             ->default(true)
+                            ->hintIcon('heroicon-m-question-mark-circle', tooltip: __('tooltips.user.status'))
                             ->disabled(
                                 fn (?Model $record): bool => $record?->id === 1
                             ),
@@ -144,7 +147,10 @@ class UserResource extends Resource implements HasShieldPermissions
                             ->dehydrated(),
                     ])
                     ->collapsible()
-                    ->columns(3),
+                    ->columns([
+                        'sm' => 2,
+                        'md' => 3,
+                    ]),
             ]);
     }
 
