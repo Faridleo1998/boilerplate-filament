@@ -19,6 +19,15 @@ class Customer extends Model
         'updated_at',
     ];
 
+    protected function casts(): array
+    {
+        return [
+            'is_featured' => 'boolean',
+            'born_date' => 'date',
+            'identification_type' => IdentificationTypeEnum::class,
+        ];
+    }
+
     // Relationships
     public function createdBy(): BelongsTo
     {
@@ -28,15 +37,6 @@ class Customer extends Model
     public function deletedBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'deleted_by');
-    }
-
-    protected function casts(): array
-    {
-        return [
-            'is_featured' => 'boolean',
-            'born_date' => 'date',
-            'identification_type' => IdentificationTypeEnum::class,
-        ];
     }
 
     // Mutators and Accessors
