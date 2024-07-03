@@ -25,6 +25,9 @@ return new class extends Migration
 
             $table->foreignId('created_by')->constrained('users');
             $table->foreignId('deleted_by')->nullable()->constrained('users');
+            $table->unsignedInteger('country_id')->nullable();
+            $table->foreignId('state_id')->nullable()->constrained();
+            $table->foreignId('city_id')->nullable()->constrained();
         });
     }
 
