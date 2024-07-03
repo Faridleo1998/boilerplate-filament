@@ -100,24 +100,17 @@ class CustomerResource extends Resource implements HasShieldPermissions
                 Tables\Columns\TextColumn::make('identification_type')
                     ->label(__('resources.customer.labels.identification_type'))
                     ->state(fn ($record) => $record->identification_type->value)
-                    ->wrapHeader()
-                    ->width('10%')
-                    ->tooltip(fn (Customer $record): string => $record->identification_type->getLabel())
-                    ->extraHeaderAttributes([
-                        'class' => 'text-left',
-                    ]),
+                    ->tooltip(fn (Customer $record): string => $record->identification_type->getLabel()),
                 Tables\Columns\TextColumn::make('identification_number')
                     ->label(__('labels.identification_number'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('full_name')
                     ->label(__('resources.customer.labels.full_name'))
-                    ->limit(25)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('email')
                     ->label(__('labels.email'))
                     ->searchable()
-                    ->sortable()
-                    ->limit(20),
+                    ->sortable(),
                 PhoneColumn::make('phone')
                     ->label(__('labels.phone'))
                     ->displayFormat(PhoneInputNumberType::E164)
