@@ -8,9 +8,18 @@ use App\Models\Customer;
 use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
+use Filament\Forms\Set;
 use Filament\Resources\Resource;
+use Filament\Support\Enums\MaxWidth;
 use Filament\Tables;
+use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Collection;
+use Nnjeim\World\Models\City;
+use Nnjeim\World\Models\Country;
+use Nnjeim\World\Models\State;
 use Ysfkaya\FilamentPhoneInput\Forms\PhoneInput;
 use Ysfkaya\FilamentPhoneInput\PhoneInputNumberType;
 use Ysfkaya\FilamentPhoneInput\Tables\PhoneColumn;
@@ -92,6 +101,56 @@ class CustomerResource extends Resource implements HasShieldPermissions
                         Forms\Components\TextInput::make('address')
                             ->label(__('labels.address'))
                             ->autocomplete('off'),
+                        Forms\Components\Select::make('country_id')
+                            ->label(__('labels.country'))
+                            ->options(Country::all()->pluck('name', 'id')->toArray())
+                            ->optionsLimit(10)
+                            ->searchable()
+                            ->preload()
+                            ->live()
+                            ->afterStateUpdated(function (Set $set): void {
+                                $set('state_id', null);
+                                $set('city_id', null);
+                            })
+                            ->afterStateHydrated(function (Get $get, Set $set, string $context): void {
+                                if ($get('country_id') || $context === 'edit') {
+                                    return;
+                                }
+
+                                $defaultCountry = Country::where('name', 'Colombia')->first();
+                                $set('country_id', $defaultCountry->id);
+                            }),
+                        Forms\Components\Select::make('state_id')
+                            ->label(__('labels.state'))
+                            ->options(
+                                fn (Get $get): Collection => State::query()
+                                    ->where('country_id', $get('country_id'))
+                                    ->pluck('name', 'id')
+                            )
+                            ->optionsLimit(10)
+                            ->searchable()
+                            ->preload()
+                            ->live()
+                            ->afterStateUpdated(fn (Set $set) => $set('city_id', null))
+                            ->afterStateHydrated(function (Get $get, Set $set, string $context): void {
+                                if ($get('state_id') || $context === 'edit') {
+                                    return;
+                                }
+
+                                $defaultState = State::where('name', 'Santander')->first();
+                                $set('state_id', $defaultState->id);
+                            }),
+                        Forms\Components\Select::make('city_id')
+                            ->label(__('labels.city'))
+                            ->options(
+                                fn (Get $get): Collection => City::query()
+                                    ->where('state_id', $get('state_id'))
+                                    ->pluck('name', 'id')
+                            )
+                            ->optionsLimit(10)
+                            ->searchable()
+                            ->preload()
+                            ->live(),
                     ])
                     ->columns([
                         'sm' => 2,
@@ -115,6 +174,9 @@ class CustomerResource extends Resource implements HasShieldPermissions
                 Tables\Columns\TextColumn::make('full_name')
                     ->label(__('resources.customer.labels.full_name'))
                     ->sortable(),
+                Tables\Columns\IconColumn::make('is_featured')
+                    ->label(__('resources.customer.labels.is_featured'))
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('email')
                     ->label(__('labels.email'))
                     ->searchable()
@@ -124,17 +186,21 @@ class CustomerResource extends Resource implements HasShieldPermissions
                     ->displayFormat(PhoneInputNumberType::E164)
                     ->placeholder('-')
                     ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('country.name')
+                    ->label(__('labels.country')),
+                Tables\Columns\TextColumn::make('state.name')
+                    ->label(__('labels.state')),
+                Tables\Columns\TextColumn::make('city.name')
+                    ->label(__('labels.city')),
                 Tables\Columns\TextColumn::make('address')
                     ->label(__('labels.address'))
                     ->placeholder('-')
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\IconColumn::make('is_featured')
-                    ->label(__('resources.customer.labels.is_featured'))
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label(__('labels.created_at'))
                     ->dateTime()
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('createdBy.full_name')
                     ->label(__('labels.created_by'))
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -145,6 +211,94 @@ class CustomerResource extends Resource implements HasShieldPermissions
                 Tables\Filters\SelectFilter::make('identification_type')
                     ->label(__('resources.customer.labels.identification_type'))
                     ->options(IdentificationTypeEnum::class),
+                Tables\Filters\Filter::make('location')
+                    ->indicateUsing(function (array $data) {
+                        $ubication = [];
+
+                        if (isset($data['country_id'])) {
+                            $ubication[] = Country::find($data['country_id'])->name;
+                        }
+
+                        if (isset($data['state_id'])) {
+                            $ubication[] = State::find($data['state_id'])->name;
+                        }
+
+                        if (isset($data['city_id'])) {
+                            $ubication[] = City::find($data['city_id'])->name;
+                        }
+
+                        return implode(' - ', $ubication);
+                    })
+                    ->form([
+                        Forms\Components\Select::make('country_id')
+                            ->label(__('labels.country'))
+                            ->options(Country::all()->pluck('name', 'id')->toArray())
+                            ->optionsLimit(10)
+                            ->searchable()
+                            ->preload()
+                            ->live()
+                            ->afterStateUpdated(function (Set $set): void {
+                                $set('state_id', null);
+                                $set('city_id', null);
+                            }),
+                        Forms\Components\Select::make('state_id')
+                            ->label(__('labels.state'))
+                            ->options(
+                                fn (Get $get): Collection => State::query()
+                                    ->where('country_id', $get('country_id'))
+                                    ->pluck('name', 'id')
+                            )
+                            ->optionsLimit(10)
+                            ->searchable()
+                            ->preload()
+                            ->live()
+                            ->afterStateUpdated(fn (Set $set) => $set('city_id', null)),
+                        Forms\Components\Select::make('city_id')
+                            ->label(__('labels.city'))
+                            ->options(
+                                fn (Get $get): Collection => City::query()
+                                    ->where('state_id', $get('state_id'))
+                                    ->pluck('name', 'id')
+                            )
+                            ->optionsLimit(10)
+                            ->searchable()
+                            ->preload()
+                            ->live(),
+
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['country_id'],
+                                fn (Builder $query, $countryId): Builder => $query->where('country_id', $countryId)
+                            )
+                            ->when(
+                                $data['state_id'],
+                                fn (Builder $query, $stateId): Builder => $query->where('state_id', $stateId)
+                            )
+                            ->when(
+                                $data['city_id'],
+                                fn (Builder $query, $cityId): Builder => $query->where('city_id', $cityId)
+                            );
+                    })
+                    ->columns([
+                        'sm' => 2,
+                        'md' => 3,
+                    ]),
+            ], layout: FiltersLayout::Modal)
+            ->filtersFormColumns([
+                'sm' => 2,
+            ])
+            ->filtersFormWidth(MaxWidth::FourExtraLarge)
+            ->filtersFormSchema(fn (array $filters): array => [
+                $filters['is_featured'],
+                $filters['identification_type'],
+                Forms\Components\Section::make()
+                    ->schema([
+                        $filters['location'],
+                    ])
+                    ->columns(1)
+                    ->columnSpanFull(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
