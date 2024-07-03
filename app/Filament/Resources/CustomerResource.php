@@ -48,27 +48,32 @@ class CustomerResource extends Resource implements HasShieldPermissions
                         Forms\Components\TextInput::make('identification_number')
                             ->label(__('labels.identification_number'))
                             ->required()
-                            ->numeric()
-                            ->autocomplete('off')
-                            ->regex('/^[0-9-]+$/i'),
+                            ->minLength(6)
+                            ->regex('/^[0-9-]+$/i')
+                            ->autocomplete('off'),
                         Forms\Components\TextInput::make('names')
                             ->label(__('resources.customer.labels.names'))
                             ->required()
+                            ->minLength(3)
+                            ->maxLength(30)
                             ->autocomplete('off'),
                         Forms\Components\TextInput::make('last_names')
                             ->label(__('resources.customer.labels.last_names'))
                             ->required()
+                            ->minLength(3)
+                            ->maxLength(30)
                             ->autocomplete('off'),
                         Forms\Components\DatePicker::make('born_date')
-                            ->label(__('labels.born_date')),
+                            ->label(__('labels.born_date'))
+                            ->maxDate(now()),
                         Forms\Components\Toggle::make('is_featured')
                             ->label(__('resources.customer.labels.is_featured'))
                             ->hintIcon('heroicon-m-question-mark-circle', tooltip: __('tooltips.is_featured'))
                             ->default(false),
                     ])
                     ->columns([
-                        'md' => 2,
-                        'lg' => 3,
+                        'sm' => 2,
+                        'md' => 3,
                         '2xl' => 4,
                     ]),
                 Forms\Components\Section::make(__('resources.customer.sections.contact_information'))
@@ -78,6 +83,7 @@ class CustomerResource extends Resource implements HasShieldPermissions
                             ->label(__('labels.email'))
                             ->required()
                             ->email()
+                            ->maxLength(50)
                             ->unique(ignoreRecord: true)
                             ->autocomplete('off'),
                         PhoneInput::make('phone')
@@ -88,7 +94,9 @@ class CustomerResource extends Resource implements HasShieldPermissions
                             ->autocomplete('off'),
                     ])
                     ->columns([
-                        'lg' => 3,
+                        'sm' => 2,
+                        'md' => 3,
+                        '2xl' => 4,
                     ]),
             ]);
     }
