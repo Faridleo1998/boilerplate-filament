@@ -5,4 +5,9 @@ return [
     'user' => [
         'status' => 'Activa o desactiva la cuenta del usuario. Los usuarios desactivados no podrán acceder al sistema.',
     ],
+    'setting' => [
+        'default_country' => 'País por defecto para la creación de registros.',
+        'default_state' => 'Departamento por defecto para la creación de registros.',
+        'default_city' => 'Ciudad por defecto para la creación de registros.',
+    ],
 ];

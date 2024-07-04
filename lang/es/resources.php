@@ -21,6 +21,10 @@ return [
             'application' => 'Aplicación',
             'social_networks' => 'Redes sociales',
         ],
+        'sections' => [
+            'company_information' => 'Información de la empresa',
+            'settings' => 'Configuración general',
+        ],
         'labels' => [
             'identification_number' => 'NIT',
             'name' => 'Nombre',
