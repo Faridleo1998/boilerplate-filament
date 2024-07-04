@@ -13,6 +13,7 @@ use Filament\Forms\Set;
 use Filament\Resources\Resource;
 use Filament\Support\Enums\MaxWidth;
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -172,14 +173,32 @@ class CustomerResource extends Resource implements HasShieldPermissions
                     ->searchable(),
                 Tables\Columns\TextColumn::make('full_name')
                     ->label(__('resources.customer.labels.full_name'))
-                    ->sortable(),
+                    ->sortable()
+                    ->limit(20)
+                    ->tooltip(function (TextColumn $column): ?string {
+                        $state = $column->getState();
+                        if (strlen($state) <= $column->getCharacterLimit()) {
+                            return null;
+                        }
+
+                        return $state;
+                    }),
                 Tables\Columns\IconColumn::make('is_featured')
                     ->label(__('resources.customer.labels.is_featured'))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('email')
                     ->label(__('labels.email'))
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->limit(20)
+                    ->tooltip(function (TextColumn $column): ?string {
+                        $state = $column->getState();
+                        if (strlen($state) <= $column->getCharacterLimit()) {
+                            return null;
+                        }
+
+                        return $state;
+                    }),
                 PhoneColumn::make('phone')
                     ->label(__('labels.phone'))
                     ->displayFormat(PhoneInputNumberType::E164)
@@ -188,7 +207,16 @@ class CustomerResource extends Resource implements HasShieldPermissions
                 Tables\Columns\TextColumn::make('country.name')
                     ->label(__('labels.country')),
                 Tables\Columns\TextColumn::make('state.name')
-                    ->label(__('labels.state')),
+                    ->label(__('labels.state'))
+                    ->limit(10)
+                    ->tooltip(function (TextColumn $column): ?string {
+                        $state = $column->getState();
+                        if (strlen($state) <= $column->getCharacterLimit()) {
+                            return null;
+                        }
+
+                        return $state;
+                    }),
                 Tables\Columns\TextColumn::make('city.name')
                     ->label(__('labels.city')),
                 Tables\Columns\TextColumn::make('address')
