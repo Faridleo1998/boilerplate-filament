@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Enums\Enums\IdentificationTypeEnum;
 use App\Filament\Resources\CustomerResource\Pages;
 use App\Models\Customer;
+use App\Models\Setting;
 use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -44,6 +45,8 @@ class CustomerResource extends Resource implements HasShieldPermissions
 
     public static function form(Form $form): Form
     {
+        $setting = Setting::first();
+
         return $form
             ->schema([
                 Forms\Components\Section::make(__('resources.customer.sections.personal_information'))
@@ -112,13 +115,13 @@ class CustomerResource extends Resource implements HasShieldPermissions
                                 $set('state_id', null);
                                 $set('city_id', null);
                             })
-                            ->afterStateHydrated(function (Get $get, Set $set, string $context): void {
-                                if ($get('country_id') || $context === 'edit') {
+                            ->afterStateHydrated(function (Set $set, string $context) use ($setting): void {
+                                if ($context !== 'create') {
                                     return;
                                 }
 
-                                $defaultCountry = Country::where('name', 'Colombia')->first();
-                                $set('country_id', $defaultCountry->id);
+                                $defaultCountry = $setting->default_country_id;
+                                $set('country_id', $defaultCountry);
                             }),
                         Forms\Components\Select::make('state_id')
                             ->label(__('labels.state'))
@@ -132,13 +135,13 @@ class CustomerResource extends Resource implements HasShieldPermissions
                             ->preload()
                             ->live()
                             ->afterStateUpdated(fn (Set $set) => $set('city_id', null))
-                            ->afterStateHydrated(function (Get $get, Set $set, string $context): void {
-                                if ($get('state_id') || $context === 'edit') {
+                            ->afterStateHydrated(function (Set $set, string $context) use ($setting): void {
+                                if ($context !== 'create') {
                                     return;
                                 }
 
-                                $defaultState = State::where('name', 'Santander')->first();
-                                $set('state_id', $defaultState->id);
+                                $defaultState = $setting->default_state_id;
+                                $set('state_id', $defaultState);
                             }),
                         Forms\Components\Select::make('city_id')
                             ->label(__('labels.city'))
@@ -150,7 +153,15 @@ class CustomerResource extends Resource implements HasShieldPermissions
                             ->optionsLimit(10)
                             ->searchable()
                             ->preload()
-                            ->live(),
+                            ->live()
+                            ->afterStateHydrated(function (Set $set, string $context) use ($setting): void {
+                                if ($context !== 'create') {
+                                    return;
+                                }
+
+                                $defaultCity = $setting->default_city_id;
+                                $set('city_id', $defaultCity);
+                            }),
                     ])
                     ->columns([
                         'sm' => 2,
