@@ -18,6 +18,10 @@ return new class extends Migration
             $table->string('email')->nullable();
             $table->json('social_networks')->nullable();
 
+            $table->unsignedInteger('default_country_id')->nullable();
+            $table->unsignedInteger('default_state_id')->nullable();
+            $table->unsignedInteger('default_city_id')->nullable();
+
             $table->timestamps();
         });
     }
