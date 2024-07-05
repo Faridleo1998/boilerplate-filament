@@ -24,6 +24,7 @@ return [
         'sections' => [
             'company_information' => 'Información de la empresa',
             'settings' => 'Configuración general',
+            'location' => 'Ubicación',
         ],
         'labels' => [
             'identification_number' => 'NIT',
@@ -31,6 +32,7 @@ return [
             'email' => 'Correo electrónico',
             'phone_number' => 'Teléfono',
             'address' => 'Dirección',
+            'use_default_location' => 'Usar ubicación como predeterminada',
         ],
     ],
     'user' => [

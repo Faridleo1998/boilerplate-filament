@@ -9,5 +9,6 @@ return [
         'default_country' => 'País por defecto para la creación de registros.',
         'default_state' => 'Departamento por defecto para la creación de registros.',
         'default_city' => 'Ciudad por defecto para la creación de registros.',
+        'use_default_location' => 'Usar ubicación como predeterminada para la creación de registros.',
     ],
 ];
