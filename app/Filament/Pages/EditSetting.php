@@ -104,7 +104,8 @@ class EditSetting extends Page implements HasForms
                                                     ->prefixIcon('heroicon-o-map-pin'),
                                                 Forms\Components\ColorPicker::make('theme_color')
                                                     ->label(__('resources.setting.labels.theme_color'))
-                                                    ->hintIcon('heroicon-m-question-mark-circle', tooltip: __('tooltips.setting.theme_color')),
+                                                    ->hintIcon('heroicon-m-question-mark-circle', tooltip: __('tooltips.setting.theme_color'))
+                                                    ->prefixIcon('heroicon-o-swatch'),
                                             ])
                                             ->columns([
                                                 'sm' => 2,
