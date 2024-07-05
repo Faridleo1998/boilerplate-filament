@@ -20,6 +20,8 @@ use Illuminate\Support\Facades\Storage;
 use Nnjeim\World\Models\City;
 use Nnjeim\World\Models\Country;
 use Nnjeim\World\Models\State;
+use Ysfkaya\FilamentPhoneInput\Forms\PhoneInput;
+use Ysfkaya\FilamentPhoneInput\PhoneInputNumberType;
 
 class EditSetting extends Page implements HasForms
 {
@@ -57,6 +59,7 @@ class EditSetting extends Page implements HasForms
     {
         $this->data = Setting::first()?->toArray();
         $this->data = $this->data ?: [];
+        $this->data['use_default_location'] = $this->data['use_default_location'] ?? true;
         $this->form->fill($this->data);
     }
 
@@ -88,66 +91,138 @@ class EditSetting extends Page implements HasForms
                                             ->prefixIcon('heroicon-o-home'),
                                         Forms\Components\Grid::make()
                                             ->schema([
-                                                Forms\Components\TextInput::make('phone_number')
-                                                    ->label(__('resources.setting.labels.phone_number'))
-                                                    ->tel()
-                                                    ->prefixIcon('heroicon-o-phone'),
-                                                Forms\Components\TextInput::make('address')
-                                                    ->label(__('resources.setting.labels.address'))
-                                                    ->prefixIcon('heroicon-o-map-pin'),
+                                                PhoneInput::make('phone_number')
+                                                    ->label(__('labels.phone'))
+                                                    ->displayNumberFormat(PhoneInputNumberType::E164),
                                                 Forms\Components\TextInput::make('email')
                                                     ->label(__('resources.setting.labels.email'))
                                                     ->email()
                                                     ->prefixIcon('heroicon-o-envelope'),
+                                                Forms\Components\TextInput::make('address')
+                                                    ->label(__('resources.setting.labels.address'))
+                                                    ->prefixIcon('heroicon-o-map-pin'),
                                             ])
                                             ->columns([
                                                 'lg' => 3,
                                             ]),
                                     ])
                                     ->collapsible(),
-                                Forms\Components\Section::make(__('resources.setting.sections.settings'))
+                                Forms\Components\Section::make(__('resources.setting.sections.location'))
                                     ->schema([
-                                        Forms\Components\Select::make('default_country_id')
-                                            ->label(__('labels.country'))
-                                            ->hintIcon('heroicon-m-question-mark-circle', tooltip: __('tooltips.setting.default_country'))
-                                            ->options(Country::all()->pluck('name', 'id')->toArray())
-                                            ->optionsLimit(10)
-                                            ->searchable()
-                                            ->preload()
-                                            ->live()
-                                            ->afterStateUpdated(function (Set $set): void {
-                                                $set('default_state_id', null);
-                                                $set('default_city_id', null);
-                                            }),
-                                        Forms\Components\Select::make('default_state_id')
-                                            ->label(__('labels.state'))
-                                            ->hintIcon('heroicon-m-question-mark-circle', tooltip: __('tooltips.setting.default_state'))
-                                            ->options(
-                                                fn(Get $get): Collection => State::query()
-                                                    ->where('country_id', $get('default_country_id'))
-                                                    ->pluck('name', 'id')
-                                            )
-                                            ->optionsLimit(10)
-                                            ->searchable()
-                                            ->preload()
-                                            ->live()
-                                            ->afterStateUpdated(fn(Set $set) => $set('city_id', null)),
-                                        Forms\Components\Select::make('default_city_id')
-                                            ->label(__('labels.city'))
-                                            ->hintIcon('heroicon-m-question-mark-circle', tooltip: __('tooltips.setting.default_city'))
-                                            ->options(
-                                                fn(Get $get): Collection => City::query()
-                                                    ->where('state_id', $get('default_state_id'))
-                                                    ->pluck('name', 'id')
-                                            )
-                                            ->optionsLimit(10)
-                                            ->searchable()
-                                            ->preload()
-                                            ->live(),
-                                    ])
-                                    ->columns([
-                                        'sm' => 2,
-                                        'xl' => 3,
+                                        Forms\Components\Group::make()
+                                            ->schema([
+                                                Forms\Components\Toggle::make('use_default_location')
+                                                    ->label(__('resources.setting.labels.use_default_location'))
+                                                    ->hintIcon('heroicon-m-question-mark-circle', tooltip: __('tooltips.setting.use_default_location'))
+                                                    ->inline(true)
+                                                    ->default(true)
+                                                    ->live()
+                                                    ->afterStateUpdated(function ($state, Set $set) {
+                                                        if ($state === true) {
+                                                            return;
+                                                        }
+                                                        $set('default_country_id', null);
+                                                        $set('default_state_id', null);
+                                                        $set('default_city_id', null);
+                                                    })
+                                                    ->columnStart([
+                                                        'sm' => 2,
+                                                        'xl' => 3,
+                                                    ]),
+                                            ])
+                                            ->columns([
+                                                'sm' => 2,
+                                                'xl' => 3,
+                                            ])
+                                            ->columnSpanFull(),
+                                        Forms\Components\Group::make()
+                                            ->schema([
+                                                Forms\Components\Select::make('country_id')
+                                                    ->label(__('labels.country'))
+                                                    ->options(Country::all()->pluck('name', 'id')->toArray())
+                                                    ->optionsLimit(10)
+                                                    ->searchable()
+                                                    ->preload()
+                                                    ->live()
+                                                    ->afterStateUpdated(function (Set $set): void {
+                                                        $set('state_id', null);
+                                                        $set('city_id', null);
+                                                    }),
+                                                Forms\Components\Select::make('state_id')
+                                                    ->label(__('labels.state'))
+                                                    ->options(
+                                                        fn(Get $get): Collection => State::query()
+                                                            ->where('country_id', $get('country_id'))
+                                                            ->pluck('name', 'id')
+                                                    )
+                                                    ->optionsLimit(10)
+                                                    ->searchable()
+                                                    ->preload()
+                                                    ->live()
+                                                    ->afterStateUpdated(fn(Set $set) => $set('city_id', null)),
+                                                Forms\Components\Select::make('city_id')
+                                                    ->label(__('labels.city'))
+                                                    ->options(
+                                                        fn(Get $get): Collection => City::query()
+                                                            ->where('state_id', $get('state_id'))
+                                                            ->pluck('name', 'id')
+                                                    )
+                                                    ->optionsLimit(10)
+                                                    ->searchable()
+                                                    ->preload()
+                                                    ->live(),
+                                            ])
+                                            ->columns([
+                                                'sm' => 2,
+                                                'xl' => 3,
+                                            ])
+                                            ->columnSpanFull(),
+                                        Forms\Components\Group::make()
+                                            ->schema([
+                                                Forms\Components\Select::make('default_country_id')
+                                                    ->label(__('labels.country'))
+                                                    ->hintIcon('heroicon-m-question-mark-circle', tooltip: __('tooltips.setting.default_country'))
+                                                    ->options(Country::all()->pluck('name', 'id')->toArray())
+                                                    ->optionsLimit(10)
+                                                    ->searchable()
+                                                    ->preload()
+                                                    ->live()
+                                                    ->afterStateUpdated(function (Set $set): void {
+                                                        $set('default_state_id', null);
+                                                        $set('default_city_id', null);
+                                                    }),
+                                                Forms\Components\Select::make('default_state_id')
+                                                    ->label(__('labels.state'))
+                                                    ->hintIcon('heroicon-m-question-mark-circle', tooltip: __('tooltips.setting.default_state'))
+                                                    ->options(
+                                                        fn(Get $get): Collection => State::query()
+                                                            ->where('country_id', $get('default_country_id'))
+                                                            ->pluck('name', 'id')
+                                                    )
+                                                    ->optionsLimit(10)
+                                                    ->searchable()
+                                                    ->preload()
+                                                    ->live()
+                                                    ->afterStateUpdated(fn(Set $set) => $set('default_city_id', null)),
+                                                Forms\Components\Select::make('default_city_id')
+                                                    ->label(__('labels.city'))
+                                                    ->hintIcon('heroicon-m-question-mark-circle', tooltip: __('tooltips.setting.default_city'))
+                                                    ->options(
+                                                        fn(Get $get): Collection => City::query()
+                                                            ->where('state_id', $get('default_state_id'))
+                                                            ->pluck('name', 'id')
+                                                    )
+                                                    ->optionsLimit(10)
+                                                    ->searchable()
+                                                    ->preload()
+                                                    ->live(),
+                                            ])
+                                            ->columns([
+                                                'sm' => 2,
+                                                'xl' => 3,
+                                            ])
+                                            ->columnSpanFull()
+                                            ->hidden(fn(Get $get) => $get('use_default_location')),
                                     ])
                                     ->collapsible(),
                             ]),
@@ -180,6 +255,12 @@ class EditSetting extends Page implements HasForms
                 if (file_exists(public_path('storage/logo.webp'))) {
                     Storage::disk('public')->delete('logo.webp');
                 }
+            }
+
+            if ($data['use_default_location']) {
+                $data['default_country_id'] = $data['country_id'];
+                $data['default_state_id'] = $data['state_id'];
+                $data['default_city_id'] = $data['city_id'];
             }
 
             Setting::updateOrCreate([], $data);

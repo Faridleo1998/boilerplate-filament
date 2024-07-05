@@ -17,6 +17,11 @@ return new class extends Migration
             $table->string('phone_number')->nullable();
             $table->string('email')->nullable();
             $table->json('social_networks')->nullable();
+            $table->boolean('use_default_location')->default(true);
+
+            $table->unsignedInteger('country_id')->nullable();
+            $table->unsignedInteger('state_id')->nullable();
+            $table->unsignedInteger('city_id')->nullable();
 
             $table->unsignedInteger('default_country_id')->nullable();
             $table->unsignedInteger('default_state_id')->nullable();

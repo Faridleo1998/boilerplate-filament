@@ -16,6 +16,7 @@ class Setting extends Model
     {
         return [
             'social_networks' => 'array',
+            'use_default_location' => 'boolean',
         ];
     }
 }
