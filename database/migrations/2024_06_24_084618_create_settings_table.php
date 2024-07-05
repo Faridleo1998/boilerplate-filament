@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('email')->nullable();
             $table->json('social_networks')->nullable();
             $table->boolean('use_default_location')->default(true);
+            $table->string('theme_color')->nullable();
 
             $table->unsignedInteger('country_id')->nullable();
             $table->unsignedInteger('state_id')->nullable();

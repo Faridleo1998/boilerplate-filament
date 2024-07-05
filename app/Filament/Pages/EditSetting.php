@@ -74,6 +74,7 @@ class EditSetting extends Page implements HasForms
                             ->icon('heroicon-o-tv')
                             ->schema([
                                 Forms\Components\Section::make(__('resources.setting.sections.company_information'))
+                                    ->icon('heroicon-o-information-circle')
                                     ->schema([
                                         Forms\Components\FileUpload::make('logo')
                                             ->image()
@@ -101,13 +102,19 @@ class EditSetting extends Page implements HasForms
                                                 Forms\Components\TextInput::make('address')
                                                     ->label(__('resources.setting.labels.address'))
                                                     ->prefixIcon('heroicon-o-map-pin'),
+                                                Forms\Components\ColorPicker::make('theme_color')
+                                                    ->label(__('resources.setting.labels.theme_color'))
+                                                    ->hintIcon('heroicon-m-question-mark-circle', tooltip: __('tooltips.setting.theme_color')),
                                             ])
                                             ->columns([
+                                                'sm' => 2,
                                                 'lg' => 3,
+                                                'xl' => 4,
                                             ]),
                                     ])
                                     ->collapsible(),
                                 Forms\Components\Section::make(__('resources.setting.sections.location'))
+                                    ->icon('icon-map-2')
                                     ->schema([
                                         Forms\Components\Group::make()
                                             ->schema([
