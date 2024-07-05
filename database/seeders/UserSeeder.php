@@ -19,7 +19,7 @@ class UserSeeder extends Seeder
             'email_verified_at' => now(),
             'password' => app()->environment('local')
                 ? Hash::make('admin')
-                : Hash::make("B0ilerplate@{${now()->year()}}*"),
+                : Hash::make('B0ilerplate@' . now()->year()),
         ]);
 
         if (app()->environment('local')) {
