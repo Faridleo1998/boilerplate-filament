@@ -19,6 +19,7 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 class AdminPanelProvider extends PanelProvider
@@ -30,7 +31,11 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->spa()
-            ->brandName(Setting::first()?->name ?? config('app.name'))
+            ->brandName(function () {
+                return Schema::hasTable('settings')
+                    ? Setting::first()?->name
+                    : config('app.name');
+            })
             ->brandLogo(function () {
                 if (file_exists(public_path('storage/logo.webp'))) {
                     return env('APP_URL') . '/storage/logo.webp';
