@@ -33,6 +33,7 @@ return [
             'phone_number' => 'Teléfono',
             'address' => 'Dirección',
             'use_default_location' => 'Usar ubicación como predeterminada',
+            'theme_color' => 'Color del tema',
         ],
     ],
     'user' => [

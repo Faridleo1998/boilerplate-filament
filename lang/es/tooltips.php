@@ -10,5 +10,6 @@ return [
         'default_state' => 'Departamento por defecto para la creación de registros.',
         'default_city' => 'Ciudad por defecto para la creación de registros.',
         'use_default_location' => 'Usar ubicación como predeterminada para la creación de registros.',
+        'theme_color' => 'Color de acento para la interfaz de usuario. Dejar en blanco para usar el color predeterminado.',
     ],
 ];
