@@ -20,5 +20,10 @@ class AppServiceProvider extends ServiceProvider
         Toggle::configureUsing(function (Toggle $toggle): void {
             $toggle->inline(false);
         });
+
+        if ($this->app->environment('local')) {
+            $this->app->register(TelescopeServiceProvider::class);
+            $this->app->register(TelescopeServiceProvider::class);
+        }
     }
 }
