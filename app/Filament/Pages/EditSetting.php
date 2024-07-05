@@ -15,6 +15,7 @@ use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Filament\Support\Exceptions\Halt;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Nnjeim\World\Models\City;
 use Nnjeim\World\Models\Country;
@@ -190,6 +191,12 @@ class EditSetting extends Page implements HasForms
 
             redirect(request()?->header('Referer'));
         } catch (Halt $exception) {
+            Log::error($exception->getMessage());
+            Notification::make()
+                ->title(__('notifications.error_occurred'))
+                ->error()
+                ->send();
+
             return;
         }
     }
