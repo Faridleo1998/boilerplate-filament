@@ -59,12 +59,13 @@ class EditSetting extends Page implements HasForms
     {
         $this->data = Setting::first()?->toArray();
         $this->data = $this->data ?: [];
-        $this->data['use_default_location'] = $this->data['use_default_location'] ?? true;
         $this->form->fill($this->data);
     }
 
     public function form(Form $form): Form
     {
+        $countries = Country::all()->pluck('name', 'id')->toArray();
+
         return $form
             ->schema([
                 Forms\Components\Tabs::make()
@@ -147,7 +148,9 @@ class EditSetting extends Page implements HasForms
                                             ->schema([
                                                 Forms\Components\Select::make('country_id')
                                                     ->label(__('labels.country'))
-                                                    ->options(Country::all()->pluck('name', 'id')->toArray())
+                                                    ->options(function () use ($countries) {
+                                                        return $countries;
+                                                    })
                                                     ->optionsLimit(10)
                                                     ->searchable()
                                                     ->preload()
@@ -190,7 +193,9 @@ class EditSetting extends Page implements HasForms
                                                 Forms\Components\Select::make('default_country_id')
                                                     ->label(__('labels.country'))
                                                     ->hintIcon('heroicon-m-question-mark-circle', tooltip: __('tooltips.setting.default_country'))
-                                                    ->options(Country::all()->pluck('name', 'id')->toArray())
+                                                    ->options(function () use ($countries) {
+                                                        return $countries;
+                                                    })
                                                     ->optionsLimit(10)
                                                     ->searchable()
                                                     ->preload()
