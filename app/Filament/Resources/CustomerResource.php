@@ -120,7 +120,7 @@ class CustomerResource extends Resource implements HasShieldPermissions
                                     return;
                                 }
 
-                                $defaultCountry = $setting->default_country_id;
+                                $defaultCountry = $setting?->default_country_id;
                                 $set('country_id', $defaultCountry);
                             }),
                         Forms\Components\Select::make('state_id')
@@ -140,7 +140,7 @@ class CustomerResource extends Resource implements HasShieldPermissions
                                     return;
                                 }
 
-                                $defaultState = $setting->default_state_id;
+                                $defaultState = $setting?->default_state_id;
                                 $set('state_id', $defaultState);
                             }),
                         Forms\Components\Select::make('city_id')
@@ -159,7 +159,7 @@ class CustomerResource extends Resource implements HasShieldPermissions
                                     return;
                                 }
 
-                                $defaultCity = $setting->default_city_id;
+                                $defaultCity = $setting?->default_city_id;
                                 $set('city_id', $defaultCity);
                             }),
                     ])
