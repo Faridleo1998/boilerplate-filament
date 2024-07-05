@@ -76,7 +76,7 @@ class EditSetting extends Page implements HasForms
                                             ->optimize('webp')
                                             ->imageEditor()
                                             ->getUploadedFileNameForStorageUsing(
-                                                fn (): string => 'logo.webp'
+                                                fn(): string => 'logo.webp'
                                             ),
                                         Forms\Components\TextInput::make('identification_number')
                                             ->label(__('resources.setting.labels.identification_number'))
@@ -122,7 +122,7 @@ class EditSetting extends Page implements HasForms
                                             ->label(__('labels.state'))
                                             ->hintIcon('heroicon-m-question-mark-circle', tooltip: __('tooltips.setting.default_state'))
                                             ->options(
-                                                fn (Get $get): Collection => State::query()
+                                                fn(Get $get): Collection => State::query()
                                                     ->where('country_id', $get('default_country_id'))
                                                     ->pluck('name', 'id')
                                             )
@@ -130,12 +130,12 @@ class EditSetting extends Page implements HasForms
                                             ->searchable()
                                             ->preload()
                                             ->live()
-                                            ->afterStateUpdated(fn (Set $set) => $set('city_id', null)),
+                                            ->afterStateUpdated(fn(Set $set) => $set('city_id', null)),
                                         Forms\Components\Select::make('default_city_id')
                                             ->label(__('labels.city'))
                                             ->hintIcon('heroicon-m-question-mark-circle', tooltip: __('tooltips.setting.default_city'))
                                             ->options(
-                                                fn (Get $get): Collection => City::query()
+                                                fn(Get $get): Collection => City::query()
                                                     ->where('state_id', $get('default_state_id'))
                                                     ->pluck('name', 'id')
                                             )

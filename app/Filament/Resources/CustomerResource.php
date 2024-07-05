@@ -126,7 +126,7 @@ class CustomerResource extends Resource implements HasShieldPermissions
                         Forms\Components\Select::make('state_id')
                             ->label(__('labels.state'))
                             ->options(
-                                fn (Get $get): Collection => State::query()
+                                fn(Get $get): Collection => State::query()
                                     ->where('country_id', $get('country_id'))
                                     ->pluck('name', 'id')
                             )
@@ -134,7 +134,7 @@ class CustomerResource extends Resource implements HasShieldPermissions
                             ->searchable()
                             ->preload()
                             ->live()
-                            ->afterStateUpdated(fn (Set $set) => $set('city_id', null))
+                            ->afterStateUpdated(fn(Set $set) => $set('city_id', null))
                             ->afterStateHydrated(function (Set $set, string $context) use ($setting): void {
                                 if ($context !== 'create') {
                                     return;
@@ -146,7 +146,7 @@ class CustomerResource extends Resource implements HasShieldPermissions
                         Forms\Components\Select::make('city_id')
                             ->label(__('labels.city'))
                             ->options(
-                                fn (Get $get): Collection => City::query()
+                                fn(Get $get): Collection => City::query()
                                     ->where('state_id', $get('state_id'))
                                     ->pluck('name', 'id')
                             )
@@ -177,8 +177,8 @@ class CustomerResource extends Resource implements HasShieldPermissions
             ->columns([
                 Tables\Columns\TextColumn::make('identification_type')
                     ->label(__('resources.customer.labels.identification_type'))
-                    ->state(fn ($record) => $record->identification_type->value)
-                    ->tooltip(fn (Customer $record): string => $record->identification_type->getLabel()),
+                    ->state(fn($record) => $record->identification_type->value)
+                    ->tooltip(fn(Customer $record): string => $record->identification_type->getLabel()),
                 Tables\Columns\TextColumn::make('identification_number')
                     ->label(__('labels.identification_number'))
                     ->searchable(),
@@ -282,7 +282,7 @@ class CustomerResource extends Resource implements HasShieldPermissions
                         Forms\Components\Select::make('state_id')
                             ->label(__('labels.state'))
                             ->options(
-                                fn (Get $get): Collection => State::query()
+                                fn(Get $get): Collection => State::query()
                                     ->where('country_id', $get('country_id'))
                                     ->pluck('name', 'id')
                             )
@@ -290,11 +290,11 @@ class CustomerResource extends Resource implements HasShieldPermissions
                             ->searchable()
                             ->preload()
                             ->live()
-                            ->afterStateUpdated(fn (Set $set) => $set('city_id', null)),
+                            ->afterStateUpdated(fn(Set $set) => $set('city_id', null)),
                         Forms\Components\Select::make('city_id')
                             ->label(__('labels.city'))
                             ->options(
-                                fn (Get $get): Collection => City::query()
+                                fn(Get $get): Collection => City::query()
                                     ->where('state_id', $get('state_id'))
                                     ->pluck('name', 'id')
                             )
@@ -308,15 +308,15 @@ class CustomerResource extends Resource implements HasShieldPermissions
                         return $query
                             ->when(
                                 $data['country_id'],
-                                fn (Builder $query, $countryId): Builder => $query->where('country_id', $countryId)
+                                fn(Builder $query, $countryId): Builder => $query->where('country_id', $countryId)
                             )
                             ->when(
                                 $data['state_id'],
-                                fn (Builder $query, $stateId): Builder => $query->where('state_id', $stateId)
+                                fn(Builder $query, $stateId): Builder => $query->where('state_id', $stateId)
                             )
                             ->when(
                                 $data['city_id'],
-                                fn (Builder $query, $cityId): Builder => $query->where('city_id', $cityId)
+                                fn(Builder $query, $cityId): Builder => $query->where('city_id', $cityId)
                             );
                     })
                     ->columns([
@@ -328,7 +328,7 @@ class CustomerResource extends Resource implements HasShieldPermissions
                 'sm' => 2,
             ])
             ->filtersFormWidth(MaxWidth::FourExtraLarge)
-            ->filtersFormSchema(fn (array $filters): array => [
+            ->filtersFormSchema(fn(array $filters): array => [
                 $filters['is_featured'],
                 $filters['identification_type'],
                 Forms\Components\Section::make()
