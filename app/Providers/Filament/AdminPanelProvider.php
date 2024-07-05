@@ -2,7 +2,7 @@
 
 namespace App\Providers\Filament;
 
-use App\Models\Setting;
+use App\Http\Middleware\Setting;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -19,7 +19,6 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 class AdminPanelProvider extends PanelProvider
@@ -31,19 +30,6 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->spa()
-            ->brandName(function () {
-                return Schema::hasTable('settings')
-                    ? Setting::first()?->name
-                    : config('app.name');
-            })
-            ->brandLogo(function () {
-                if (file_exists(public_path('storage/logo.webp'))) {
-                    return env('APP_URL') . '/storage/logo.webp';
-                }
-
-                return null;
-            })
-            ->brandLogoHeight('3rem')
             ->login()
             ->profile()
             ->breadcrumbs(false)
@@ -71,6 +57,7 @@ class AdminPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
+                Setting::class,
             ])
             ->authMiddleware([
                 Authenticate::class,
