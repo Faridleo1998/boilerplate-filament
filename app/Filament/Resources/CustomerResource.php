@@ -365,4 +365,9 @@ class CustomerResource extends Resource implements HasShieldPermissions
     {
         return __('resources.customer.singular_label');
     }
+
+    public static function getSlug(): string
+    {
+        return strtolower(static::getPluralModelLabel());
+    }
 }
