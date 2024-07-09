@@ -17,6 +17,7 @@ use Filament\Support\Exceptions\Halt;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\HtmlString;
 use Nnjeim\World\Models\City;
 use Nnjeim\World\Models\Country;
 use Nnjeim\World\Models\State;
@@ -78,9 +79,11 @@ class EditSetting extends Page implements HasForms
                                     ->icon('heroicon-o-information-circle')
                                     ->schema([
                                         Forms\Components\FileUpload::make('logo')
-                                            ->image()
+                                            ->acceptedFileTypes(['image/png', 'image/jpg', 'image/jpeg', 'image/png', 'image/webp'])
+                                            ->maxSize(1024)
                                             ->optimize('webp')
                                             ->imageEditor()
+                                            ->helperText(new HtmlString(__('resources.setting.helper_text.image_field')))
                                             ->getUploadedFileNameForStorageUsing(
                                                 fn(): string => 'logo.webp'
                                             ),
