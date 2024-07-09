@@ -14,10 +14,10 @@ class EditProfile extends BaseEditProfile
             ->schema([
                 TextInput::make('full_name')
                     ->label(__('labels.full_name'))
-                    ->disabled(fn(): bool => auth()->user()->id === 1)
+                    ->disabled()
                     ->required(),
                 $this->getEmailFormComponent()
-                    ->disabled(fn(): bool => auth()->user()->id === 1),
+                    ->disabled(),
                 $this->getPasswordFormComponent(),
                 $this->getPasswordConfirmationFormComponent(),
             ]);
