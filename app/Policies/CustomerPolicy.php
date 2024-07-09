@@ -38,4 +38,9 @@ class CustomerPolicy
     {
         return $user->can('delete_customer');
     }
+
+    public function export(User $user): bool
+    {
+        return $user->can('export_customer');
+    }
 }
