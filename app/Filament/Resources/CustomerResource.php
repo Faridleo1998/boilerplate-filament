@@ -384,7 +384,7 @@ class CustomerResource extends Resource implements HasShieldPermissions
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
-            ->bulkActions([
+            ->groupedBulkActions([
                 ExportBulkAction::make()
                     ->color('success')
                     ->exports([
@@ -402,6 +402,8 @@ class CustomerResource extends Resource implements HasShieldPermissions
                             ]),
                     ])
                     ->visible(Gate::allows('export', Customer::class)),
+                Tables\Actions\DeleteBulkAction::make()
+                    ->visible(Gate::allows('delete', Customer::class)),
             ])
             ->defaultSort('created_at', 'desc');
     }
