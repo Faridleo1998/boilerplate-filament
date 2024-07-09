@@ -2,8 +2,10 @@
 
 namespace App\Policies;
 
+use App\Models\Customer;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Support\Facades\Gate;
 
 class CustomerPolicy
 {
@@ -16,7 +18,10 @@ class CustomerPolicy
 
     public function view(User $user): bool
     {
-        return $user->can('view_customer');
+        $canView = $user->can('view_customer');
+        $canNotUpdate = Gate::denies('update', Customer::class);
+
+        return $canView && $canNotUpdate;
     }
 
     public function create(User $user): bool
