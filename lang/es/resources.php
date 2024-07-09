@@ -35,6 +35,9 @@ return [
             'use_default_location' => 'Usar ubicación como predeterminada',
             'theme_color' => 'Color del tema',
         ],
+        'helper_text' => [
+            'image_field' => 'Peso máximo: <strong>1MB</strong>. Tipos de archivo permitidos: <i>JPG, JPEG, PNG, WEBP.</i>',
+        ],
     ],
     'user' => [
         'singular_label' => 'Usuario',
