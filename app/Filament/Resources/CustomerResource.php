@@ -223,7 +223,16 @@ class CustomerResource extends Resource implements HasShieldPermissions
                 Tables\Columns\TextColumn::make('country.name')
                     ->label(__('labels.country'))
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->limit(10)
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->tooltip(function (TextColumn $column): ?string {
+                        $state = $column->getState();
+                        if (strlen($state) <= $column->getCharacterLimit()) {
+                            return null;
+                        }
+
+                        return $state;
+                    }),
                 Tables\Columns\TextColumn::make('state.name')
                     ->label(__('labels.state'))
                     ->sortable()
@@ -240,7 +249,16 @@ class CustomerResource extends Resource implements HasShieldPermissions
                 Tables\Columns\TextColumn::make('city.name')
                     ->label(__('labels.city'))
                     ->sortable()
-                    ->toggleable(),
+                    ->limit(10)
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->tooltip(function (TextColumn $column): ?string {
+                        $state = $column->getState();
+                        if (strlen($state) <= $column->getCharacterLimit()) {
+                            return null;
+                        }
+
+                        return $state;
+                    }),
                 Tables\Columns\TextColumn::make('address')
                     ->label(__('labels.address'))
                     ->placeholder('-')
