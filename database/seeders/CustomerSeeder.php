@@ -13,9 +13,11 @@ class CustomerSeeder extends Seeder
         if (app()->environment('local')) {
             $userIds = User::all()->pluck('id')->toArray();
 
-            Customer::factory(50)->create([
-                'created_by' => fake()->randomElement($userIds),
-            ]);
+            for ($i = 0; $i < 50; $i++) {
+                Customer::factory()->create([
+                    'created_by' => fake()->randomElement($userIds),
+                ]);
+            }
         }
     }
 }
