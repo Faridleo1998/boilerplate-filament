@@ -339,6 +339,7 @@ class CustomerResource extends Resource implements HasShieldPermissions
                     ->columnSpanFull(),
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
@@ -357,6 +358,7 @@ class CustomerResource extends Resource implements HasShieldPermissions
         return [
             'index' => Pages\ListCustomers::route('/'),
             'create' => Pages\CreateCustomer::route('/create'),
+            'view' => Pages\ViewCustomer::route('/{record}'),
             'edit' => Pages\EditCustomer::route('/{record}/edit'),
         ];
     }
