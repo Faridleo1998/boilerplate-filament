@@ -14,6 +14,10 @@ return [
             'personal_information' => 'Información personal',
             'contact_information' => 'Información de contacto',
         ],
+        'values' => [
+            'is_featured_true' => 'Sí',
+            'is_featured_false' => 'No',
+        ],
     ],
     'setting' => [
         'singular_label' => 'General',
