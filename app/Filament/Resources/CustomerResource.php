@@ -278,6 +278,16 @@ class CustomerResource extends Resource implements HasShieldPermissions
                 Tables\Filters\SelectFilter::make('identification_type')
                     ->label(__('resources.customer.labels.identification_type'))
                     ->options(IdentificationTypeEnum::class),
+                Tables\Filters\SelectFilter::make('created_by')
+                    ->label(__('labels.created_by'))
+                    ->relationship(
+                        'createdBy',
+                        'full_name',
+                        modifyQueryUsing: fn(Builder $query): Builder => $query->whereHas('customers')
+                    )
+                    ->searchable()
+                    ->optionsLimit(10)
+                    ->preload(),
                 Tables\Filters\Filter::make('location')
                     ->indicateUsing(function (array $data) {
                         $ubication = [];
@@ -355,11 +365,13 @@ class CustomerResource extends Resource implements HasShieldPermissions
             ], layout: FiltersLayout::Modal)
             ->filtersFormColumns([
                 'sm' => 2,
+                'md' => 3,
             ])
             ->filtersFormWidth(MaxWidth::FourExtraLarge)
             ->filtersFormSchema(fn(array $filters): array => [
                 $filters['is_featured'],
                 $filters['identification_type'],
+                $filters['created_by'],
                 Forms\Components\Section::make()
                     ->schema([
                         $filters['location'],
