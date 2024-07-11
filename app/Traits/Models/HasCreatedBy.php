@@ -2,6 +2,8 @@
 
 namespace App\Traits\Models;
 
+use App\Models\User;
+
 trait HasCreatedBy
 {
     public static function bootHasCreatedBy()
@@ -11,5 +13,10 @@ trait HasCreatedBy
                 $model->created_by = auth()->id();
             });
         }
+    }
+
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class, 'created_by');
     }
 }
