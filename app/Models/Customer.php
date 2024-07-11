@@ -61,28 +61,28 @@ class Customer extends Model
     protected function names(): Attribute
     {
         return new Attribute(
-            set: fn ($value) => ucwords(strtolower($value)),
+            set: fn($value): string => ucwords(strtolower($value)),
         );
     }
 
     protected function lastNames(): Attribute
     {
         return new Attribute(
-            set: fn ($value) => ucwords(strtolower($value)),
+            set: fn($value): string => ucwords(strtolower($value)),
         );
     }
 
     protected function fullName(): Attribute
     {
         return new Attribute(
-            get: fn () => "{$this->names} {$this->last_names}",
+            get: fn(): string => "{$this->names} {$this->last_names}",
         );
     }
 
     protected function email(): Attribute
     {
         return new Attribute(
-            set: fn ($value) => strtolower($value),
+            set: fn($value): string => strtolower($value),
         );
     }
 }
