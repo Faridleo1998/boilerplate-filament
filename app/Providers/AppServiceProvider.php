@@ -12,7 +12,10 @@ class AppServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        //
+        if ($this->app->environment('local')) {
+            $this->app->register(\Laravel\Telescope\TelescopeServiceProvider::class);
+            $this->app->register(TelescopeServiceProvider::class);
+        }
     }
 
     public function boot(): void
@@ -27,10 +30,5 @@ class AppServiceProvider extends ServiceProvider
             PanelsRenderHook::USER_MENU_BEFORE,
             fn() => auth()->user()->full_name,
         );
-
-        if ($this->app->environment('local')) {
-            $this->app->register(TelescopeServiceProvider::class);
-            $this->app->register(TelescopeServiceProvider::class);
-        }
     }
 }
