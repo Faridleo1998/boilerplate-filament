@@ -4,12 +4,11 @@ namespace App\Models;
 
 use App\Enums\Status;
 use App\Traits\Models\HasCreatedBy;
+use App\Traits\Models\Relations\UserRelations;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasName;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
@@ -17,6 +16,7 @@ use Spatie\Permission\Traits\HasRoles;
 class User extends Authenticatable implements FilamentUser, HasName
 {
     use HasCreatedBy, HasFactory, HasRoles, Notifiable;
+    use UserRelations;
 
     protected $fillable = [
         'identification_number',
@@ -42,17 +42,6 @@ class User extends Authenticatable implements FilamentUser, HasName
     public function getFilamentName(): string
     {
         return "{$this->full_name}";
-    }
-
-    // Relationships
-    public function createdBy(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'created_by');
-    }
-
-    public function customers(): HasMany
-    {
-        return $this->hasMany(Customer::class, 'created_by');
     }
 
     // Casts
