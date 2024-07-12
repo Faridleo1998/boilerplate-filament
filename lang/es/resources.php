@@ -3,6 +3,7 @@
 return [
     'customer' => [
         'singular_label' => 'Cliente',
+        'plural_label' => 'Clientes',
         'labels' => [
             'names' => 'Nombre(s)',
             'last_names' => 'Apellido(s)',
