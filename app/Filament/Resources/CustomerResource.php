@@ -19,13 +19,9 @@ use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Gate;
 use Nnjeim\World\Models\City;
 use Nnjeim\World\Models\Country;
 use Nnjeim\World\Models\State;
-use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
-use pxlrbt\FilamentExcel\Columns\Column;
-use pxlrbt\FilamentExcel\Exports\ExcelExport;
 use Ysfkaya\FilamentPhoneInput\Forms\PhoneInput;
 use Ysfkaya\FilamentPhoneInput\PhoneInputNumberType;
 use Ysfkaya\FilamentPhoneInput\Tables\PhoneColumn;
@@ -416,27 +412,6 @@ class CustomerResource extends Resource implements HasShieldPermissions
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
-            ])
-            ->groupedBulkActions([
-                ExportBulkAction::make()
-                    ->color('success')
-                    ->exports([
-                        ExcelExport::make('table')
-                            ->fromTable()
-                            ->withFilename(fn($resource): string => $resource::getPluralModelLabel() . ' - ' . now()->format('Y-m-d'))
-                            ->withColumns([
-                                Column::make('is_featured')
-                                    ->heading(__('resources.customer.labels.is_featured'))
-                                    ->formatStateUsing(
-                                        fn(bool $state): string => $state
-                                            ? __('resources.customer.values.is_featured_true')
-                                            : __('resources.customer.values.is_featured_false')
-                                    ),
-                            ]),
-                    ])
-                    ->visible(Gate::allows('export', Customer::class)),
-                Tables\Actions\DeleteBulkAction::make()
-                    ->visible(Gate::allows('delete', Customer::class)),
             ])
             ->defaultSort('created_at', 'desc');
     }
