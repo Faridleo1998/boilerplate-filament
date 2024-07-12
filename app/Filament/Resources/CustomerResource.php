@@ -40,20 +40,6 @@ class CustomerResource extends Resource implements HasShieldPermissions
                 'country:id,name',
                 'state:id,name',
                 'city:id,name',
-            ])
-            ->select([
-                'id',
-                'identification_type',
-                'identification_number',
-                'names',
-                'last_names',
-                'is_featured',
-                'email',
-                'phone',
-                'address',
-                'country_id',
-                'state_id',
-                'city_id',
             ]);
     }
 
