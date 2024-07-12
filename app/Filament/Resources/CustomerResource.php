@@ -36,6 +36,31 @@ class CustomerResource extends Resource implements HasShieldPermissions
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
 
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->with([
+                'createdBy:id,full_name',
+                'country:id,name',
+                'state:id,name',
+                'city:id,name',
+            ])
+            ->select([
+                'id',
+                'identification_type',
+                'identification_number',
+                'names',
+                'last_names',
+                'is_featured',
+                'email',
+                'phone',
+                'address',
+                'country_id',
+                'state_id',
+                'city_id',
+            ]);
+    }
+
     public static function getPermissionPrefixes(): array
     {
         return [
@@ -50,7 +75,7 @@ class CustomerResource extends Resource implements HasShieldPermissions
 
     public static function form(Form $form): Form
     {
-        $setting = Setting::first();
+        $setting = Setting::first(['default_country_id', 'default_state_id', 'default_city_id']);
 
         return $form
             ->schema([
@@ -111,9 +136,13 @@ class CustomerResource extends Resource implements HasShieldPermissions
                             ->autocomplete('off'),
                         Forms\Components\Select::make('country_id')
                             ->label(__('labels.country'))
-                            ->options(Country::all()->pluck('name', 'id')->toArray())
+                            ->options(
+                                Country::select(['id', 'name'])
+                                    ->pluck('name', 'id')
+                                    ->toArray()
+                            )
                             ->optionsLimit(10)
-                            ->searchable()
+                            ->searchable(['name'])
                             ->preload()
                             ->live()
                             ->afterStateUpdated(function (Set $set): void {
@@ -131,12 +160,12 @@ class CustomerResource extends Resource implements HasShieldPermissions
                         Forms\Components\Select::make('state_id')
                             ->label(__('labels.state'))
                             ->options(
-                                fn(Get $get): Collection => State::query()
+                                fn(Get $get): Collection => State::select(['id', 'name'])
                                     ->where('country_id', $get('country_id'))
                                     ->pluck('name', 'id')
                             )
                             ->optionsLimit(10)
-                            ->searchable()
+                            ->searchable(['name'])
                             ->preload()
                             ->live()
                             ->afterStateUpdated(fn(Set $set) => $set('city_id', null))
@@ -151,7 +180,7 @@ class CustomerResource extends Resource implements HasShieldPermissions
                         Forms\Components\Select::make('city_id')
                             ->label(__('labels.city'))
                             ->options(
-                                fn(Get $get): Collection => City::query()
+                                fn(Get $get): Collection => City::select(['id', 'name'])
                                     ->where('state_id', $get('state_id'))
                                     ->pluck('name', 'id')
                             )
@@ -293,15 +322,15 @@ class CustomerResource extends Resource implements HasShieldPermissions
                         $ubication = [];
 
                         if (isset($data['country_id'])) {
-                            $ubication[] = Country::find($data['country_id'])->name;
+                            $ubication[] = Country::find($data['country_id'], ['name'])->name;
                         }
 
                         if (isset($data['state_id'])) {
-                            $ubication[] = State::find($data['state_id'])->name;
+                            $ubication[] = State::find($data['state_id'], ['name'])->name;
                         }
 
                         if (isset($data['city_id'])) {
-                            $ubication[] = City::find($data['city_id'])->name;
+                            $ubication[] = City::find($data['city_id'], ['name'])->name;
                         }
 
                         return implode(' - ', $ubication);
@@ -309,7 +338,11 @@ class CustomerResource extends Resource implements HasShieldPermissions
                     ->form([
                         Forms\Components\Select::make('country_id')
                             ->label(__('labels.country'))
-                            ->options(Country::all()->pluck('name', 'id')->toArray())
+                            ->options(
+                                Country::select(['id', 'name'])
+                                    ->pluck('name', 'id')
+                                    ->toArray()
+                            )
                             ->optionsLimit(10)
                             ->searchable()
                             ->preload()
@@ -321,7 +354,7 @@ class CustomerResource extends Resource implements HasShieldPermissions
                         Forms\Components\Select::make('state_id')
                             ->label(__('labels.state'))
                             ->options(
-                                fn(Get $get): Collection => State::query()
+                                fn(Get $get): Collection => State::select(['id', 'name'])
                                     ->where('country_id', $get('country_id'))
                                     ->pluck('name', 'id')
                             )
@@ -333,7 +366,7 @@ class CustomerResource extends Resource implements HasShieldPermissions
                         Forms\Components\Select::make('city_id')
                             ->label(__('labels.city'))
                             ->options(
-                                fn(Get $get): Collection => City::query()
+                                fn(Get $get): Collection => City::select(['id', 'name'])
                                     ->where('state_id', $get('state_id'))
                                     ->pluck('name', 'id')
                             )
