@@ -18,7 +18,6 @@
         "livewire/livewire": "^3.5",
         "nnjeim/world": "^1.1",
         "psr/simple-cache": "^2.0",
-        "pxlrbt/filament-excel": "^2.3",
         "ysfkaya/filament-phone-input": "^2.3"
     },
     "require-dev": {
