@@ -2,7 +2,7 @@
 
 namespace App\Filament\Pages;
 
-use App\Enums\Enums\SocialNetworkEnum;
+use App\Enums\SocialNetworkEnum;
 use App\Models\Setting;
 use Filament\Actions\Action;
 use Filament\Forms;

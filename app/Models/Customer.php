@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Enums\Enums\IdentificationTypeEnum;
+use App\Enums\IdentificationTypeEnum;
 use App\Traits\Models\Attributes\CustomerAttributes;
 use App\Traits\Models\HasCreatedBy;
 use App\Traits\Models\Relations\CustomerRelations;

@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Enums\Enums\IdentificationTypeEnum;
+use App\Enums\IdentificationTypeEnum;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Nnjeim\World\Models\City;
 
