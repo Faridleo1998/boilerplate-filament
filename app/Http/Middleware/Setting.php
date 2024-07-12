@@ -12,7 +12,7 @@ class Setting
 {
     public function handle(Request $request, Closure $next): Response
     {
-        $settings = SettingModel::first();
+        $settings = SettingModel::first(['name', 'theme_color']);
 
         if ($settings?->theme_color) {
             FilamentColor::register([
