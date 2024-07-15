@@ -12,6 +12,7 @@
         "bezhansalleh/filament-shield": "^3.2",
         "filament/filament": "^3.2",
         "filament/spatie-laravel-media-library-plugin": "^3.2",
+        "hammerstone/fast-paginate": "^1.1",
         "joshembling/image-optimizer": "^1.4",
         "laravel/framework": "^11.9",
         "laravel/tinker": "^2.9",
