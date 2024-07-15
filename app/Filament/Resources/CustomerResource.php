@@ -74,6 +74,7 @@ class CustomerResource extends Resource implements HasShieldPermissions
                             ->label(__('labels.identification_number'))
                             ->required()
                             ->minLength(6)
+                            ->autofocus()
                             ->autocomplete('off'),
                         Forms\Components\TextInput::make('names')
                             ->label(__('resources.customer.labels.names'))
@@ -200,6 +201,7 @@ class CustomerResource extends Resource implements HasShieldPermissions
                     ->searchable(),
                 Tables\Columns\TextColumn::make('full_name')
                     ->label(__('resources.customer.labels.full_name'))
+                    ->searchable(['names', 'last_names'])
                     ->sortable()
                     ->limit(20)
                     ->tooltip(function (TextColumn $column): ?string {
@@ -212,25 +214,17 @@ class CustomerResource extends Resource implements HasShieldPermissions
                     }),
                 Tables\Columns\IconColumn::make('is_featured')
                     ->label(__('resources.customer.labels.is_featured'))
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('email')
                     ->label(__('labels.email'))
                     ->searchable()
-                    ->sortable()
-                    ->limit(20)
-                    ->tooltip(function (TextColumn $column): ?string {
-                        $state = $column->getState();
-                        if (strlen($state) <= $column->getCharacterLimit()) {
-                            return null;
-                        }
-
-                        return $state;
-                    }),
+                    ->sortable(),
                 PhoneColumn::make('phone')
                     ->label(__('labels.phone'))
                     ->displayFormat(PhoneInputNumberType::E164)
                     ->placeholder('-')
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('country.name')
                     ->label(__('labels.country'))
                     ->sortable()
@@ -261,7 +255,7 @@ class CustomerResource extends Resource implements HasShieldPermissions
                     ->label(__('labels.city'))
                     ->sortable()
                     ->limit(10)
-                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->toggleable(isToggledHiddenByDefault: false)
                     ->tooltip(function (TextColumn $column): ?string {
                         $state = $column->getState();
                         if (strlen($state) <= $column->getCharacterLimit()) {
