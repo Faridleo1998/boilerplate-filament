@@ -263,17 +263,6 @@ class RoleResource extends Resource implements HasShieldPermissions
             ])
             ->toArray();
 
-        $pages = static::unsetPages($pages);
-
-        return $pages;
-    }
-
-    public static function unsetPages(array $pages): array
-    {
-        if (auth()->user()->id !== 1) {
-            unset($pages['page_EditSetting']);
-        }
-
         return $pages;
     }
 
