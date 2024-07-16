@@ -90,7 +90,12 @@ class PaymentMethodResource extends Resource implements HasShieldPermissions
                     ->label(__('labels.qr_code'))
                     ->collection('qr')
                     ->action(
-                        fn($record) => response()->download($record->getFirstMediaPath('logo'))
+                        function (PaymentMethod $record) {
+                            $qr_image = $record->getFirstMediaPath('qr');
+                            if ($qr_image) {
+                                return response()->download($qr_image);
+                            }
+                        }
                     ),
                 Tables\Columns\IconColumn::make('is_digital')
                     ->label(__('resources.payment_method.labels.is_digital')),
