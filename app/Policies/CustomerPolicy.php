@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Filament\Resources\CustomerResource;
 use App\Models\Customer;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -41,6 +42,8 @@ class CustomerPolicy
 
     public function export(User $user): bool
     {
-        return $user->can('export_customer');
+        $hasRecords = CustomerResource::getEloquentQuery()->count() > 0;
+
+        return $user->can('export_customer') && $hasRecords;
     }
 }
