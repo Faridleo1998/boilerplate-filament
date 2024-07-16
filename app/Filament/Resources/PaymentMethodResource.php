@@ -45,7 +45,8 @@ class PaymentMethodResource extends Resource implements HasShieldPermissions
                 Forms\Components\TextInput::make('name')
                     ->label(__('labels.name'))
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->unique(ignoreRecord: true),
                 SpatieMediaLibraryFileUpload::make('logo')
                     ->collection('logo')
                     ->acceptedFileTypes(['image/png', 'image/jpg', 'image/jpeg', 'image/png', 'image/webp'])
