@@ -16,10 +16,8 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
-use Spatie\Permission\Models\Role;
 
 class RoleResource extends Resource implements HasShieldPermissions
 {
@@ -46,7 +44,6 @@ class RoleResource extends Resource implements HasShieldPermissions
             'create',
             'update',
             'delete',
-            'delete_any',
         ];
     }
 
@@ -126,13 +123,7 @@ class RoleResource extends Resource implements HasShieldPermissions
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
-            ])
-            ->checkIfRecordIsSelectableUsing(
-                fn(Role $record): bool => Gate::allows('delete', [$record])
-            );
+            ]);
     }
 
     public static function getPages(): array

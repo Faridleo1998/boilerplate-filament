@@ -41,9 +41,4 @@ class UserPolicy
 
         return $canDelete && $isNotSelf && $isNotSuperAdmin;
     }
-
-    public function deleteAny(User $user): bool
-    {
-        return $user->can('delete_any_user');
-    }
 }

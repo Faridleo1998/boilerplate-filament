@@ -46,9 +46,4 @@ class RolePolicy
 
         return $canDelete && $isNotSuperAdmin && ! $userHasRole;
     }
-
-    public function deleteAny(User $user): bool
-    {
-        return $user->can('delete_any_shield::role');
-    }
 }

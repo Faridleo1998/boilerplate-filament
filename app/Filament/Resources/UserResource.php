@@ -14,7 +14,6 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
 use Ysfkaya\FilamentPhoneInput\Forms\PhoneInput;
 use Ysfkaya\FilamentPhoneInput\PhoneInputNumberType;
@@ -38,7 +37,6 @@ class UserResource extends Resource implements HasShieldPermissions
             'create',
             'update',
             'delete',
-            'delete_any',
         ];
     }
 
@@ -213,12 +211,6 @@ class UserResource extends Resource implements HasShieldPermissions
                     }),
                 Tables\Actions\DeleteAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
-            ])
-            ->checkIfRecordIsSelectableUsing(
-                fn(User $record): bool => Gate::allows('delete', [$record])
-            )
             ->defaultSort('created_at', 'asc');
     }
 
