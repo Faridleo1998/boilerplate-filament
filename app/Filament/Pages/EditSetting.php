@@ -4,6 +4,7 @@ namespace App\Filament\Pages;
 
 use App\Enums\SocialNetworkEnum;
 use App\Models\Setting;
+use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use Filament\Actions\Action;
 use Filament\Forms;
 use Filament\Forms\Concerns\InteractsWithForms;
@@ -26,7 +27,7 @@ use Ysfkaya\FilamentPhoneInput\PhoneInputNumberType;
 
 class EditSetting extends Page implements HasForms
 {
-    use InteractsWithForms;
+    use HasPageShield, InteractsWithForms;
 
     protected static string $view = 'filament.pages.edit-setting';
 
@@ -37,11 +38,6 @@ class EditSetting extends Page implements HasForms
     protected static ?int $navigationSort = 1;
 
     public ?array $data = [];
-
-    public static function canAccess(): bool
-    {
-        return auth()->user()->id === 1;
-    }
 
     public static function getNavigationLabel(): string
     {
