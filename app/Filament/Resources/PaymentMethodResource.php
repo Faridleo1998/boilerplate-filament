@@ -125,7 +125,7 @@ class PaymentMethodResource extends Resource implements HasShieldPermissions
                     ->modalWidth(MaxWidth::Large),
                 Tables\Actions\DeleteAction::make(),
             ])
-            ->reorderable('order_column')
+            ->reorderable('order_column', fn() => PaymentMethodResource::getEloquentQuery()->count() > 1)
             ->defaultSort('order_column');
     }
 
