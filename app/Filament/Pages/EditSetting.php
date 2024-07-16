@@ -30,6 +30,8 @@ class EditSetting extends Page implements HasForms
 
     protected static string $view = 'filament.pages.edit-setting';
 
+    protected static ?string $navigationIcon = 'icon-settings';
+
     protected static ?string $navigationGroup = 'Settings';
 
     protected static ?int $navigationSort = 1;

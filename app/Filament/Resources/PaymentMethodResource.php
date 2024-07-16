@@ -124,6 +124,11 @@ class PaymentMethodResource extends Resource implements HasShieldPermissions
         ];
     }
 
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getEloquentQuery()->count();
+    }
+
     public static function getLabel(): string
     {
         return __('resources.payment_method.singular_label');
