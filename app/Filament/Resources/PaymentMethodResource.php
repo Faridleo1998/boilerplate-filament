@@ -112,7 +112,9 @@ class PaymentMethodResource extends Resource implements HasShieldPermissions
                 Tables\Actions\EditAction::make()
                     ->modalWidth(MaxWidth::Large),
                 Tables\Actions\DeleteAction::make(),
-            ]);
+            ])
+            ->reorderable('order_column')
+            ->defaultSort('order_column');
     }
 
     public static function getPages(): array

@@ -14,6 +14,7 @@ return new class extends Migration
             $table->string('name')->unique();
             $table->boolean('is_digital')->default(false);
             $table->boolean('status')->default(Status::ACTIVE);
+            $table->integer('order_column')->nullable();
 
             $table->timestamp('created_at')->useCurrent();
 
