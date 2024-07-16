@@ -314,11 +314,8 @@ class CustomerResource extends Resource implements HasShieldPermissions
                     ->form([
                         Forms\Components\Select::make('country_id')
                             ->label(__('labels.country'))
-                            ->options(
-                                Country::select(['id', 'name'])
-                                    ->pluck('name', 'id')
-                                    ->toArray()
-                            )
+                            ->getSearchResultsUsing(fn(string $search): array => Country::where('name', 'like', "%{$search}%")->limit(10)->pluck('name', 'id')->toArray())
+                            ->getOptionLabelUsing(fn($value): ?string => Country::find($value)?->name)
                             ->optionsLimit(10)
                             ->searchable()
                             ->preload()
@@ -330,9 +327,15 @@ class CustomerResource extends Resource implements HasShieldPermissions
                         Forms\Components\Select::make('state_id')
                             ->label(__('labels.state'))
                             ->options(
-                                fn(Get $get): Collection => State::select(['id', 'name'])
-                                    ->where('country_id', $get('country_id'))
-                                    ->pluck('name', 'id')
+                                function (Get $get): ?Collection {
+                                    if (! $get('country_id')) {
+                                        return null;
+                                    }
+
+                                    return State::select(['id', 'name'])
+                                        ->where('country_id', $get('country_id'))
+                                        ->pluck('name', 'id');
+                                }
                             )
                             ->optionsLimit(10)
                             ->searchable()
@@ -342,9 +345,15 @@ class CustomerResource extends Resource implements HasShieldPermissions
                         Forms\Components\Select::make('city_id')
                             ->label(__('labels.city'))
                             ->options(
-                                fn(Get $get): Collection => City::select(['id', 'name'])
-                                    ->where('state_id', $get('state_id'))
-                                    ->pluck('name', 'id')
+                                function (Get $get) {
+                                    if (! $get('state_id')) {
+                                        return null;
+                                    }
+
+                                    return City::select(['id', 'name'])
+                                        ->where('state_id', $get('state_id'))
+                                        ->pluck('name', 'id');
+                                }
                             )
                             ->optionsLimit(10)
                             ->searchable()
