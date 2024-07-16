@@ -24,14 +24,6 @@ class ManageUsers extends ManageRecords
     {
         $data = $this->sanitize($data, $this->excludeFields, 'exclude');
 
-        if (array_key_exists('full_name', $data)) {
-            $data['full_name'] = ucwords(strtolower($data['full_name']));
-        }
-
-        if (array_key_exists('email', $data)) {
-            $data['email'] = strtolower($data['email']);
-        }
-
         return $data;
     }
 
