@@ -6,6 +6,7 @@ return [
     'birth_date' => 'Fecha de cumpleaños',
     'created_at' => 'Fecha de creación',
     'country' => 'País',
+    'qr_code' => 'Código QR',
     'state' => 'Departamento',
     'city' => 'Ciudad',
     'created_by' => 'Creado por',

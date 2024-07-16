@@ -20,6 +20,13 @@ return [
             'is_featured_false' => 'No',
         ],
     ],
+    'payment_method' => [
+        'singular_label' => 'Medio de pago',
+        'plural_label' => 'Medios de pago',
+        'labels' => [
+            'is_digital' => 'Digital',
+        ],
+    ],
     'setting' => [
         'singular_label' => 'General',
         'tabs' => [
