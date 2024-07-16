@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\Status;
+use App\Traits\Models\Attributes\UserAttributes;
 use App\Traits\Models\HasCreatedBy;
 use App\Traits\Models\Relations\UserRelations;
 use Filament\Models\Contracts\FilamentUser;
@@ -16,7 +17,7 @@ use Spatie\Permission\Traits\HasRoles;
 class User extends Authenticatable implements FilamentUser, HasName
 {
     use HasCreatedBy, HasFactory, HasRoles, Notifiable;
-    use UserRelations;
+    use UserAttributes, UserRelations;
 
     protected $fillable = [
         'identification_number',
