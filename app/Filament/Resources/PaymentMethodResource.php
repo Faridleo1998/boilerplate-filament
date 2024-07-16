@@ -14,6 +14,7 @@ use Filament\Support\Enums\MaxWidth;
 use Filament\Tables;
 use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\HtmlString;
 
 class PaymentMethodResource extends Resource implements HasShieldPermissions
@@ -84,7 +85,8 @@ class PaymentMethodResource extends Resource implements HasShieldPermissions
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->label(__('labels.name'))
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
                 SpatieMediaLibraryImageColumn::make('logo')
                     ->collection('logo'),
                 SpatieMediaLibraryImageColumn::make('qr')
@@ -105,7 +107,11 @@ class PaymentMethodResource extends Resource implements HasShieldPermissions
                     ->badge(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label(__('labels.created_at'))
-                    ->dateTime(),
+                    ->dateTime()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('createdBy.full_name')
+                    ->label(__('labels.created_by'))
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
@@ -128,6 +134,14 @@ class PaymentMethodResource extends Resource implements HasShieldPermissions
         return [
             'index' => Pages\ManagePaymentMethods::route('/'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->with([
+                'createdBy:id,full_name',
+            ]);
     }
 
     public static function getNavigationBadge(): ?string

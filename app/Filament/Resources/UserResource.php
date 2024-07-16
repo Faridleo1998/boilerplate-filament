@@ -238,8 +238,14 @@ class UserResource extends Resource implements HasShieldPermissions
 
     public static function getEloquentQuery(): Builder
     {
+        $query = parent::getEloquentQuery()
+            ->with([
+                'createdBy:id,full_name',
+                'roles:id',
+            ]);
+
         return auth()->user()->id !== 1
-            ? parent::getEloquentQuery()->whereNot('id', 1)
-            : parent::getEloquentQuery();
+            ? $query->whereNot('id', 1)
+            : $query;
     }
 }
