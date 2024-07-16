@@ -199,7 +199,7 @@ class RoleResource extends Resource implements HasShieldPermissions
                         : $entity['model']
                 );
 
-                return Forms\Components\Section::make($sectionLabel)
+                return Forms\Components\Section::make(ucfirst(strtolower($sectionLabel)))
                     ->compact()
                     ->schema([
                         static::getCheckBoxListComponentForResource($entity),
