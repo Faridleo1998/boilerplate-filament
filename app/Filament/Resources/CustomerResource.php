@@ -195,14 +195,16 @@ class CustomerResource extends Resource implements HasShieldPermissions
                 Tables\Columns\TextColumn::make('identification_type')
                     ->label(__('resources.customer.labels.identification_type'))
                     ->state(fn($record) => $record->identification_type->value)
-                    ->tooltip(fn(Customer $record): string => $record->identification_type->getLabel()),
+                    ->tooltip(fn(Customer $record): string => $record->identification_type->getLabel())
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('identification_number')
                     ->label(__('labels.identification_number'))
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('full_name')
                     ->label(__('resources.customer.labels.full_name'))
                     ->searchable(['names', 'last_names'])
-                    ->sortable()
+                    ->sortable(['names'])
                     ->limit(20)
                     ->tooltip(function (TextColumn $column): ?string {
                         $state = $column->getState();
