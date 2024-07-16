@@ -53,20 +53,20 @@ class UserResource extends Resource implements HasShieldPermissions
                             ->maxLength(20)
                             ->unique(ignoreRecord: true)
                             ->disabled(
-                                fn (?Model $record): bool => $record?->id === 1
+                                fn(?Model $record): bool => $record?->id === 1
                             ),
                         Forms\Components\TextInput::make('full_name')
                             ->label(__('labels.full_name'))
                             ->required()
                             ->maxLength(255)
                             ->disabled(
-                                fn (?Model $record): bool => $record?->id === 1
+                                fn(?Model $record): bool => $record?->id === 1
                             ),
                         Forms\Components\DatePicker::make('birth_date')
                             ->label(__('labels.birth_date'))
                             ->maxDate(now())
                             ->disabled(
-                                fn (?Model $record): bool => $record?->id === 1
+                                fn(?Model $record): bool => $record?->id === 1
                             ),
                     ])
                     ->columns([
@@ -84,19 +84,19 @@ class UserResource extends Resource implements HasShieldPermissions
                             ->maxLength(255)
                             ->unique(ignoreRecord: true)
                             ->disabled(
-                                fn (?Model $record): bool => $record?->id === 1
+                                fn(?Model $record): bool => $record?->id === 1
                             ),
                         PhoneInput::make('phone')
                             ->label(__('labels.phone'))
                             ->displayNumberFormat(PhoneInputNumberType::E164)
                             ->disabled(
-                                fn (?Model $record): bool => $record?->id === 1
+                                fn(?Model $record): bool => $record?->id === 1
                             ),
                         Forms\Components\TextInput::make('address')
                             ->label(__('labels.address'))
                             ->maxLength(255)
                             ->disabled(
-                                fn (?Model $record): bool => $record?->id === 1
+                                fn(?Model $record): bool => $record?->id === 1
                             ),
                     ])
                     ->columns([
@@ -112,21 +112,21 @@ class UserResource extends Resource implements HasShieldPermissions
                             ->default(true)
                             ->hintIcon('heroicon-m-question-mark-circle', tooltip: __('tooltips.user.status'))
                             ->disabled(
-                                fn (?Model $record): bool => $record?->id === 1
+                                fn(?Model $record): bool => $record?->id === 1
                             ),
                         Forms\Components\TextInput::make('password')
                             ->label(__('labels.password'))
                             ->required(
-                                fn (string $context): bool => $context === 'create'
+                                fn(string $context): bool => $context === 'create'
                             )
                             ->minLength(8)
                             ->password()
                             ->revealable()
                             ->dehydrateStateUsing(
-                                fn (?string $state): ?string => Hash::make($state)
+                                fn(?string $state): ?string => Hash::make($state)
                             )
                             ->dehydrated(
-                                fn (?string $state): bool => filled($state)
+                                fn(?string $state): bool => filled($state)
                             ),
                         Forms\Components\Select::make('roles')
                             ->relationship(
@@ -142,7 +142,7 @@ class UserResource extends Resource implements HasShieldPermissions
                             ->preload()
                             ->searchable()
                             ->disabled(
-                                fn (?Model $record): bool => $record?->id === 1
+                                fn(?Model $record): bool => $record?->id === 1
                             )
                             ->dehydrated(),
                     ])
@@ -215,7 +215,7 @@ class UserResource extends Resource implements HasShieldPermissions
                 Tables\Actions\DeleteBulkAction::make(),
             ])
             ->checkIfRecordIsSelectableUsing(
-                fn (User $record): bool => Gate::allows('delete', [$record])
+                fn(User $record): bool => Gate::allows('delete', [$record])
             )
             ->defaultSort('created_at', 'asc');
     }
