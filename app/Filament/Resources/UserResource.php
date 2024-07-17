@@ -144,7 +144,7 @@ class UserResource extends Resource implements HasShieldPermissions
                             ->preload()
                             ->searchable()
                             ->disabled(
-                                fn(?Model $record): bool => $record?->id === 1
+                                fn(?Model $record): bool => $record?->id === 1 || auth()->user()->id === $record?->id
                             )
                             ->dehydrated(),
                     ])
