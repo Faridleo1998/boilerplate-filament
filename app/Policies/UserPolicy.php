@@ -41,4 +41,9 @@ class UserPolicy
 
         return $canDelete && $isNotSelf && $isNotSuperAdmin;
     }
+
+    public function restore(User $user): bool
+    {
+        return $user->can('restore_user');
+    }
 }

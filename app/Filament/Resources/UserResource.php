@@ -14,6 +14,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
 use Ysfkaya\FilamentPhoneInput\Forms\PhoneInput;
 use Ysfkaya\FilamentPhoneInput\PhoneInputNumberType;
@@ -37,6 +38,7 @@ class UserResource extends Resource implements HasShieldPermissions
             'create',
             'update',
             'delete',
+            'restore',
         ];
     }
 
@@ -200,6 +202,8 @@ class UserResource extends Resource implements HasShieldPermissions
                 Tables\Filters\SelectFilter::make('status')
                     ->label(__('labels.status'))
                     ->options(Status::class),
+                Tables\Filters\TrashedFilter::make()
+                    ->visible(fn() => Gate::allows('restore', User::class)),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
@@ -208,8 +212,22 @@ class UserResource extends Resource implements HasShieldPermissions
                         $data = $manageUsers->sanitizeData($data);
 
                         return $data;
+                    })
+                    ->hidden(fn(User $user) => $user->trashed()),
+                Tables\Actions\DeleteAction::make()
+                    ->before(function (User $user): void {
+                        $user->update([
+                            'status' => Status::INACTIVE,
+                        ]);
+
+                        $user->roles()->detach();
                     }),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\RestoreAction::make()
+                    ->before(function (User $user): void {
+                        $user->update([
+                            'status' => Status::ACTIVE,
+                        ]);
+                    }),
             ])
             ->defaultSort('created_at', 'asc');
     }
@@ -243,6 +261,10 @@ class UserResource extends Resource implements HasShieldPermissions
                 'createdBy:id,full_name',
                 'roles:id',
             ]);
+
+        if (Gate::allows('restore', User::class)) {
+            $query->withTrashed();
+        }
 
         return auth()->user()->id !== 1
             ? $query->whereNot('id', 1)
