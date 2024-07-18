@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\Status;
 use App\Traits\Models\Attributes\PaymentMethodAttributes;
 use App\Traits\Models\HasCreatedBy;
+use App\Traits\Models\Relations\PaymentMethodRelations;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -14,7 +15,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 class PaymentMethod extends Model implements HasMedia
 {
     use HasCreatedBy, HasFactory, InteractsWithMedia, SoftDeletes;
-    use PaymentMethodAttributes;
+    use PaymentMethodAttributes, PaymentMethodRelations;
 
     public $timestamps = false;
 
