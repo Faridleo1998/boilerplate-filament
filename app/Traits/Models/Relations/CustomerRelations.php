@@ -2,6 +2,7 @@
 
 namespace App\Traits\Models\Relations;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Nnjeim\World\Models\City;
 use Nnjeim\World\Models\Country;
@@ -17,6 +18,11 @@ trait CustomerRelations
     public function country(): BelongsTo
     {
         return $this->belongsTo(Country::class);
+    }
+
+    public function createdBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'created_by')->withTrashed();
     }
 
     public function state(): BelongsTo
