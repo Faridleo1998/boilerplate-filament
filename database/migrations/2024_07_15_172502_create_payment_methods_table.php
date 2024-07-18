@@ -16,6 +16,7 @@ return new class extends Migration
             $table->boolean('status')->default(Status::ACTIVE);
             $table->integer('order_column')->nullable();
 
+            $table->softDeletes();
             $table->timestamp('created_at')->useCurrent();
 
             $table->foreignId('created_by')->constrained('users');

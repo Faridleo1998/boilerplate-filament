@@ -15,6 +15,7 @@ use Filament\Tables;
 use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\HtmlString;
 
 class PaymentMethodResource extends Resource implements HasShieldPermissions
@@ -36,6 +37,7 @@ class PaymentMethodResource extends Resource implements HasShieldPermissions
             'create',
             'update',
             'delete',
+            'restore',
         ];
     }
 
@@ -119,11 +121,15 @@ class PaymentMethodResource extends Resource implements HasShieldPermissions
                     ->options(Status::class),
                 Tables\Filters\TernaryFilter::make('is_digital')
                     ->label(__('resources.payment_method.labels.is_digital')),
+                Tables\Filters\TrashedFilter::make()
+                    ->visible(fn() => Gate::allows('restore', PaymentMethod::class)),
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
-                    ->modalWidth(MaxWidth::Large),
+                    ->modalWidth(MaxWidth::Large)
+                    ->hidden(fn(PaymentMethod $paymentMethod) => $paymentMethod->trashed()),
                 Tables\Actions\DeleteAction::make(),
+                Tables\Actions\RestoreAction::make(),
             ])
             ->reorderable('order_column', fn() => PaymentMethodResource::getEloquentQuery()->count() > 1)
             ->defaultSort('order_column');
@@ -138,10 +144,16 @@ class PaymentMethodResource extends Resource implements HasShieldPermissions
 
     public static function getEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery()
+        $query = parent::getEloquentQuery()
             ->with([
                 'createdBy:id,full_name',
             ]);
+
+        if (Gate::allows('restore', PaymentMethod::class)) {
+            $query->withTrashed();
+        }
+
+        return $query;
     }
 
     public static function getNavigationBadge(): ?string

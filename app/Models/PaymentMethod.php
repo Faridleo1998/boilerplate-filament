@@ -7,12 +7,13 @@ use App\Traits\Models\Attributes\PaymentMethodAttributes;
 use App\Traits\Models\HasCreatedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
 class PaymentMethod extends Model implements HasMedia
 {
-    use HasCreatedBy, HasFactory, InteractsWithMedia;
+    use HasCreatedBy, HasFactory, InteractsWithMedia, SoftDeletes;
     use PaymentMethodAttributes;
 
     public $timestamps = false;

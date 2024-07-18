@@ -28,4 +28,9 @@ class PaymentMethodPolicy
     {
         return $user->can('delete_payment::method');
     }
+
+    public function restore(User $user): bool
+    {
+        return $user->can('restore_payment::method');
+    }
 }
