@@ -40,6 +40,11 @@ class CustomerPolicy
         return $user->can('delete_customer');
     }
 
+    public function restore(User $user): bool
+    {
+        return $user->can('restore_user');
+    }
+
     public function export(User $user): bool
     {
         $hasRecords = CustomerResource::getEloquentQuery()->count() > 0;

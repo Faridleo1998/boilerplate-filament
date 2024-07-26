@@ -19,6 +19,7 @@ use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Gate;
 use Nnjeim\World\Models\City;
 use Nnjeim\World\Models\Country;
 use Nnjeim\World\Models\State;
@@ -32,17 +33,6 @@ class CustomerResource extends Resource implements HasShieldPermissions
 
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
 
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()
-            ->with([
-                'createdBy:id,full_name',
-                'country:id,name',
-                'state:id,name',
-                'city:id,name',
-            ]);
-    }
-
     public static function getPermissionPrefixes(): array
     {
         return [
@@ -51,6 +41,7 @@ class CustomerResource extends Resource implements HasShieldPermissions
             'create',
             'update',
             'delete',
+            'restore',
             'export',
         ];
     }
@@ -295,6 +286,8 @@ class CustomerResource extends Resource implements HasShieldPermissions
                     ->searchable()
                     ->optionsLimit(10)
                     ->preload(),
+                Tables\Filters\TrashedFilter::make('trashed')
+                    ->visible(fn() => Gate::allows('restore', Customer::class)),
                 Tables\Filters\Filter::make('location')
                     ->indicateUsing(function (array $data) {
                         $ubication = [];
@@ -398,11 +391,13 @@ class CustomerResource extends Resource implements HasShieldPermissions
                     ])
                     ->columns(1)
                     ->columnSpanFull(),
+                $filters['trashed'],
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
+                Tables\Actions\RestoreAction::make(),
             ])
             ->defaultSort('created_at', 'desc');
     }
@@ -422,6 +417,24 @@ class CustomerResource extends Resource implements HasShieldPermissions
             'view' => Pages\ViewCustomer::route('/{record}'),
             'edit' => Pages\EditCustomer::route('/{record}/edit'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+
+        $query = parent::getEloquentQuery()
+            ->with([
+                'createdBy:id,full_name',
+                'country:id,name',
+                'state:id,name',
+                'city:id,name',
+            ]);
+
+        if (Gate::allows('restore', Customer::class)) {
+            $query->withTrashed();
+        }
+
+        return $query;
     }
 
     public static function getLabel(): string

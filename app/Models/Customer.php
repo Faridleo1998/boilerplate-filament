@@ -8,11 +8,13 @@ use App\Traits\Models\HasCreatedBy;
 use App\Traits\Models\Relations\CustomerRelations;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Customer extends Model
 {
     use CustomerAttributes, CustomerRelations;
     use HasCreatedBy, HasFactory;
+    use SoftDeletes;
 
     protected $guarded = [
         'id',
