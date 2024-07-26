@@ -16,6 +16,7 @@ use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Filament\Support\Exceptions\Halt;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\HtmlString;
@@ -278,6 +279,11 @@ class EditSetting extends Page implements HasForms
             }
 
             Setting::updateOrCreate([], $data);
+
+            Cache::put('settings', [
+                'theme_color' => $data['theme_color'],
+                'name' => $data['name'],
+            ]);
 
             Notification::make()
                 ->title(__('filament-panels::resources/pages/edit-record.notifications.saved.title'))
