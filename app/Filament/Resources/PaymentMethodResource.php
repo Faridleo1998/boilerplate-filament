@@ -39,6 +39,7 @@ class PaymentMethodResource extends Resource implements HasShieldPermissions
             'update',
             'delete',
             'restore',
+            'force_delete',
         ];
     }
 

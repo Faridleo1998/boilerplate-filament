@@ -33,4 +33,9 @@ class PaymentMethodPolicy
     {
         return $user->can('restore_payment::method');
     }
+
+    public function forceDelete(User $user): bool
+    {
+        return $user->can('force_delete_payment::method');
+    }
 }
