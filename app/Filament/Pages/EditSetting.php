@@ -86,13 +86,19 @@ class EditSetting extends Page implements HasForms
                                             ->getUploadedFileNameForStorageUsing(
                                                 fn(): string => 'logo.webp'
                                             ),
-                                        Forms\Components\TextInput::make('identification_number')
-                                            ->label(__('resources.setting.labels.identification_number'))
-                                            ->prefixIcon('heroicon-o-identification')
-                                            ->rules(['regex:/^[0-9-]*$/']),
-                                        Forms\Components\TextInput::make('name')
-                                            ->label(__('resources.setting.labels.name'))
-                                            ->prefixIcon('heroicon-o-home'),
+                                        Forms\Components\Group::make()
+                                            ->schema([
+                                                Forms\Components\TextInput::make('identification_number')
+                                                    ->label(__('resources.setting.labels.identification_number'))
+                                                    ->prefixIcon('heroicon-o-identification')
+                                                    ->rules(['regex:/^[0-9-]*$/']),
+                                                Forms\Components\TextInput::make('name')
+                                                    ->label(__('resources.setting.labels.name'))
+                                                    ->prefixIcon('heroicon-o-home'),
+                                            ])
+                                            ->columns([
+                                                'xl' => 2,
+                                            ]),
                                         Forms\Components\Grid::make()
                                             ->schema([
                                                 PhoneInput::make('phone_number')
@@ -112,7 +118,6 @@ class EditSetting extends Page implements HasForms
                                             ])
                                             ->columns([
                                                 'sm' => 2,
-                                                'lg' => 3,
                                                 'xl' => 4,
                                             ]),
                                     ])
