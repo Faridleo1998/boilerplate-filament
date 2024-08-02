@@ -6,6 +6,7 @@ use App\Enums\Status;
 use App\Traits\Models\Attributes\PaymentMethodAttributes;
 use App\Traits\Models\HasCreatedBy;
 use App\Traits\Models\Relations\PaymentMethodRelations;
+use App\Traits\Models\RestoreAndUpdateWithTrashed;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -16,6 +17,7 @@ class PaymentMethod extends Model implements HasMedia
 {
     use HasCreatedBy, HasFactory, InteractsWithMedia, SoftDeletes;
     use PaymentMethodAttributes, PaymentMethodRelations;
+    use RestoreAndUpdateWithTrashed;
 
     public $timestamps = false;
 

@@ -17,6 +17,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\HtmlString;
+use Illuminate\Validation\Rules\Unique;
 
 class PaymentMethodResource extends Resource implements HasShieldPermissions
 {
@@ -49,7 +50,9 @@ class PaymentMethodResource extends Resource implements HasShieldPermissions
                     ->label(__('labels.name'))
                     ->required()
                     ->maxLength(255)
-                    ->unique(ignoreRecord: true),
+                    ->unique(ignoreRecord: true, modifyRuleUsing: function (Unique $rule) {
+                        return $rule->whereNull('deleted_at');
+                    }),
                 SpatieMediaLibraryFileUpload::make('logo')
                     ->collection('logo')
                     ->acceptedFileTypes(['image/png', 'image/jpg', 'image/jpeg', 'image/png', 'image/webp'])
@@ -128,8 +131,19 @@ class PaymentMethodResource extends Resource implements HasShieldPermissions
                 Tables\Actions\EditAction::make()
                     ->modalWidth(MaxWidth::Large)
                     ->hidden(fn(PaymentMethod $paymentMethod) => $paymentMethod->trashed()),
-                Tables\Actions\DeleteAction::make(),
-                Tables\Actions\RestoreAction::make(),
+                Tables\Actions\DeleteAction::make()
+                    ->after(
+                        fn(PaymentMethod $record) => $record->update([
+                            'status' => Status::INACTIVE,
+                        ])
+                    ),
+                Tables\Actions\RestoreAction::make()
+                    ->after(
+                        fn(PaymentMethod $record) => $record->update([
+                            'status' => Status::ACTIVE,
+                        ])
+                    ),
+                Tables\Actions\ForceDeleteAction::make(),
             ])
             ->reorderable('order_column', fn() => PaymentMethodResource::getEloquentQuery()->count() > 1)
             ->defaultSort('order_column');
@@ -158,7 +172,7 @@ class PaymentMethodResource extends Resource implements HasShieldPermissions
 
     public static function getNavigationBadge(): ?string
     {
-        return static::getEloquentQuery()->count();
+        return static::getEloquentQuery()->whereNull('deleted_at')->count();
     }
 
     public static function getLabel(): string
