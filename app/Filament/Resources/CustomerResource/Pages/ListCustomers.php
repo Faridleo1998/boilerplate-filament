@@ -27,7 +27,6 @@ class ListCustomers extends ListRecords
                 ->label(__('actions.export'))
                 ->modalHeading(__('actions.export') . ' ' . __('resources.customer.plural_label'))
                 ->color('success')
-                ->icon('heroicon-o-arrow-down-tray')
                 ->exporter(CustomerExporter::class)
                 ->visible(Gate::allows('export', Customer::class)),
             Actions\CreateAction::make(),
