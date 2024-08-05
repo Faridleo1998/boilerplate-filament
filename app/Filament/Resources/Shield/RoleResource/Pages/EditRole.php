@@ -5,7 +5,6 @@ namespace App\Filament\Resources\Shield\RoleResource\Pages;
 use App\Filament\Resources\Shield\RoleResource;
 use App\Traits\SanitizeFields;
 use BezhanSalleh\FilamentShield\Support\Utils;
-use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
@@ -17,13 +16,6 @@ class EditRole extends EditRecord
     protected static string $resource = RoleResource::class;
 
     public Collection $permissions;
-
-    protected function getActions(): array
-    {
-        return [
-            Actions\DeleteAction::make(),
-        ];
-    }
 
     protected function mutateFormDataBeforeSave(array $data): array
     {
