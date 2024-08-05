@@ -21,6 +21,7 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use pxlrbt\FilamentEnvironmentIndicator\EnvironmentIndicatorPlugin;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -85,6 +86,15 @@ class AdminPanelProvider extends PanelProvider
                         'default' => 1,
                         'sm' => 2,
                     ]),
+                EnvironmentIndicatorPlugin::make()
+                    ->showBorder(false)
+                    ->color(fn() => match (app()->environment()) {
+                        'production' => null,
+                        'staging' => Color::Orange,
+                        'testing' => Color::Green,
+                        'local' => Color::Red,
+                        default => Color::Blue,
+                    }),
             ])
             ->databaseNotifications();
     }
