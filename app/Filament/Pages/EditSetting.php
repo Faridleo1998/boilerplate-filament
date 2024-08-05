@@ -45,11 +45,6 @@ class EditSetting extends Page implements HasForms
         return __('resources.setting.singular_label');
     }
 
-    public static function getSlug(): string
-    {
-        return strtolower(__('resources.setting.singular_label'));
-    }
-
     public function getTitle(): string
     {
         return __('resources.setting.singular_label');
