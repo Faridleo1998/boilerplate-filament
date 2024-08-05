@@ -114,8 +114,9 @@ class UserResource extends Resource implements HasShieldPermissions
                             ->default(true)
                             ->hintIcon('heroicon-m-question-mark-circle', tooltip: __('tooltips.user.status'))
                             ->disabled(
-                                fn(?Model $record): bool => $record?->id === 1
-                            ),
+                                fn(?Model $record): bool => $record?->id === 1 || auth()->user()->id === $record?->id
+                            )
+                            ->dehydrated(),
                         Forms\Components\TextInput::make('password')
                             ->label(__('labels.password'))
                             ->required(
