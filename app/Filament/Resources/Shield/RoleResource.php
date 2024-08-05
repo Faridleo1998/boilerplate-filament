@@ -166,11 +166,6 @@ class RoleResource extends Resource implements HasShieldPermissions
         return __('filament-shield::filament-shield.nav.role.label');
     }
 
-    public static function getSlug(): string
-    {
-        return strtolower(static::getPluralModelLabel());
-    }
-
     public static function getNavigationBadge(): ?string
     {
         return Utils::isResourceNavigationBadgeEnabled()

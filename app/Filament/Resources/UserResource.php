@@ -233,11 +233,6 @@ class UserResource extends Resource implements HasShieldPermissions
             ->defaultSort('created_at', 'asc');
     }
 
-    public static function getSlug(): string
-    {
-        return strtolower(static::getPluralModelLabel());
-    }
-
     public static function getPages(): array
     {
         return [
