@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use BezhanSalleh\FilamentLanguageSwitch\LanguageSwitch;
 use Filament\Forms\Components\Toggle;
 use Filament\Support\Facades\FilamentView;
 use Filament\Tables\Table;
@@ -30,5 +31,14 @@ class AppServiceProvider extends ServiceProvider
             PanelsRenderHook::USER_MENU_BEFORE,
             fn() => auth()->user()->full_name,
         );
+
+        LanguageSwitch::configureUsing(function (LanguageSwitch $switch) {
+            $switch
+                ->locales(['es', 'en'])
+                ->flags([
+                    'es' => asset('flags/es.svg'),
+                    'en' => asset('flags/sh.svg'),
+                ]);
+        });
     }
 }
