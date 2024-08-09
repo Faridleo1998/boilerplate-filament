@@ -12,6 +12,7 @@ trait RestoreAndUpdateWithTrashed
 
         if ($record->trashed()) {
             $record->restore();
+            $record->created_at = now();
         }
 
         $record->fill($data)->save();
