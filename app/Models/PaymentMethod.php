@@ -19,7 +19,7 @@ class PaymentMethod extends Model implements HasMedia
     use PaymentMethodAttributes, PaymentMethodRelations;
     use RestoreAndUpdateWithTrashed;
 
-    public $timestamps = false;
+    const UPDATED_AT = null;
 
     protected $guarded = [
         'id',

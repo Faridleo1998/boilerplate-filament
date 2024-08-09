@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('phone', 30)->nullable();
             $table->string('address', 255)->nullable();
 
-            $table->timestamps();
+            $table->datetime('created_at')->useCurrent();
             $table->softDeletes();
 
             $table->foreignId('created_by')->constrained('users');

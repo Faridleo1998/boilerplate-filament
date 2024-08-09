@@ -16,6 +16,8 @@ class Customer extends Model
     use HasCreatedBy, HasFactory;
     use SoftDeletes;
 
+    const UPDATED_AT = null;
+
     protected $guarded = [
         'id',
         'created_at',
