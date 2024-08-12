@@ -71,7 +71,7 @@ return [
         'delete' => 'Eliminar',
         'delete_any' => 'Eliminar varios',
         'export' => 'Exportar',
-        'force_delete' => 'Forzar elminación',
+        'force_delete' => 'Forzar eliminación',
         'force_delete_any' => 'Forzar eliminación varios',
         'restore' => 'Restaurar',
         'reorder' => 'Reordenar',
