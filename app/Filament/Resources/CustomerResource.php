@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources;
 
-use App\Enums\IdentificationTypeEnum;
+use App\Enums\IdentificationType;
 use App\Filament\Resources\CustomerResource\Pages;
 use App\Models\Customer;
 use App\Models\Setting;
@@ -58,8 +58,8 @@ class CustomerResource extends Resource implements HasShieldPermissions
                         Forms\Components\Select::make('identification_type')
                             ->label(__('resources.customer.labels.identification_type'))
                             ->required()
-                            ->options(IdentificationTypeEnum::class)
-                            ->default(IdentificationTypeEnum::CC)
+                            ->options(IdentificationType::class)
+                            ->default(IdentificationType::CC)
                             ->selectablePlaceholder(false),
                         Forms\Components\TextInput::make('identification_number')
                             ->label(__('labels.identification_number'))
@@ -275,7 +275,7 @@ class CustomerResource extends Resource implements HasShieldPermissions
                     ->label(__('resources.customer.labels.is_featured')),
                 Tables\Filters\SelectFilter::make('identification_type')
                     ->label(__('resources.customer.labels.identification_type'))
-                    ->options(IdentificationTypeEnum::class),
+                    ->options(IdentificationType::class),
                 Tables\Filters\SelectFilter::make('created_by')
                     ->label(__('labels.created_by'))
                     ->relationship(

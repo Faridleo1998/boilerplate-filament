@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Enums\IdentificationTypeEnum;
+use App\Enums\IdentificationType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Nnjeim\World\Models\City;
 
@@ -13,7 +13,7 @@ class CustomerFactory extends Factory
         $city = City::inRandomOrder()->first();
 
         return [
-            'identification_type' => fake()->randomElement(IdentificationTypeEnum::class),
+            'identification_type' => fake()->randomElement(IdentificationType::class),
             'identification_number' => fake()->unique()->numerify('##########'),
             'names' => fake()->firstName(),
             'last_names' => fake()->lastName(),

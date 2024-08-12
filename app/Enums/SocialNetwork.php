@@ -4,7 +4,7 @@ namespace App\Enums;
 
 use Filament\Support\Contracts\HasLabel;
 
-enum SocialNetworkEnum: string implements HasLabel
+enum SocialNetwork: string implements HasLabel
 {
     case WHATSAPP = 'whatsapp';
     case FACEBOOK = 'facebook';

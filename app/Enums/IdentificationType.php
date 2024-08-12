@@ -4,7 +4,7 @@ namespace App\Enums;
 
 use Filament\Support\Contracts\HasLabel;
 
-enum IdentificationTypeEnum: string implements HasLabel
+enum IdentificationType: string implements HasLabel
 {
     case CC = 'CC';
     case NIT = 'NIT';

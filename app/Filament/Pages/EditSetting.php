@@ -2,7 +2,7 @@
 
 namespace App\Filament\Pages;
 
-use App\Enums\SocialNetworkEnum;
+use App\Enums\SocialNetwork;
 use App\Models\Setting;
 use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use Filament\Actions\Action;
@@ -246,7 +246,7 @@ class EditSetting extends Page implements HasForms
                             ->icon('heroicon-o-heart')
                             ->schema(function () {
                                 $fields = [];
-                                foreach (SocialNetworkEnum::options() as $key => $value) {
+                                foreach (SocialNetwork::options() as $key => $value) {
                                     $fields[] = Forms\Components\TextInput::make($key)
                                         ->label(ucfirst(strtolower($value)))
                                         ->prefixIcon("icon-brand-{$key}");

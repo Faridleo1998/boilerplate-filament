@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Enums\IdentificationTypeEnum;
+use App\Enums\IdentificationType;
 use App\Traits\Models\Attributes\CustomerAttributes;
 use App\Traits\Models\HasCreatedBy;
 use App\Traits\Models\Relations\CustomerRelations;
@@ -29,7 +29,7 @@ class Customer extends Model
         return [
             'is_featured' => 'boolean',
             'born_date' => 'date',
-            'identification_type' => IdentificationTypeEnum::class,
+            'identification_type' => IdentificationType::class,
         ];
     }
 }
