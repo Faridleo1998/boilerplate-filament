@@ -9,6 +9,13 @@ class EditCustomer extends EditRecord
 {
     protected static string $resource = CustomerResource::class;
 
+    protected function mutateFormDataBeforeSave(array $data): array
+    {
+        $createCustomer = app(CreateCustomer::class);
+
+        return $createCustomer->sanitizeData($data);
+    }
+
     protected function getRedirectUrl(): string
     {
         return $this->getResource()::getUrl('index');
