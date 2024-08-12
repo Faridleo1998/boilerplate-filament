@@ -17,6 +17,7 @@ use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Table;
+use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Gate;
@@ -440,5 +441,10 @@ class CustomerResource extends Resource implements HasShieldPermissions
     public static function getLabel(): string
     {
         return __('resources.customer.singular_label');
+    }
+
+    protected function paginateTableQuery(Builder $query): Paginator
+    {
+        return $query->fastPaginate(($this->getTableRecordsPerPage() === 'all') ? $query->count() : $this->getTableRecordsPerPage());
     }
 }
