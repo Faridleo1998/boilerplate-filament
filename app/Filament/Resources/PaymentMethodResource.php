@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Enums\Status;
 use App\Filament\Resources\PaymentMethodResource\Pages;
+use App\Filament\Resources\PaymentMethodResource\Pages\ManagePaymentMethods;
 use App\Models\PaymentMethod;
 use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use Filament\Forms;
@@ -131,6 +132,9 @@ class PaymentMethodResource extends Resource implements HasShieldPermissions
             ->actions([
                 Tables\Actions\EditAction::make()
                     ->modalWidth(MaxWidth::Large)
+                    ->mutateFormDataUsing(
+                        fn(array $data, ManagePaymentMethods $managePaymentMethods) => $managePaymentMethods->sanitize($data, $managePaymentMethods->includeFields)
+                    )
                     ->hidden(fn(PaymentMethod $paymentMethod) => $paymentMethod->trashed()),
                 Tables\Actions\DeleteAction::make()
                     ->after(
