@@ -4,6 +4,7 @@ namespace App\Filament\Pages;
 
 use App\Enums\SocialNetwork;
 use App\Models\Setting;
+use App\Traits\SanitizeFields;
 use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use Filament\Actions\Action;
 use Filament\Forms;
@@ -30,6 +31,8 @@ class EditSetting extends Page implements HasForms
 {
     use HasPageShield, InteractsWithForms;
 
+    use SanitizeFields;
+
     protected static string $view = 'filament.pages.edit-setting';
 
     protected static ?string $navigationIcon = 'icon-settings';
@@ -39,6 +42,14 @@ class EditSetting extends Page implements HasForms
     protected static ?int $navigationSort = 1;
 
     public ?array $data = [];
+
+    private array $includeFields = [
+        'identification_number',
+        'name',
+        'address',
+        'email',
+        'phone_number',
+    ];
 
     public static function getNavigationLabel(): string
     {
@@ -75,6 +86,8 @@ class EditSetting extends Page implements HasForms
                                         Forms\Components\FileUpload::make('logo')
                                             ->acceptedFileTypes(['image/png', 'image/jpg', 'image/jpeg', 'image/png', 'image/webp'])
                                             ->maxSize(1024)
+                                            ->disk('public')
+                                            ->directory('images')
                                             ->optimize('webp')
                                             ->imageEditor()
                                             ->helperText(new HtmlString(__('resources.setting.helper_text.image_field')))
@@ -266,10 +279,8 @@ class EditSetting extends Page implements HasForms
         try {
             $data = $this->form->getState();
 
-            if (! $data['logo']) {
-                if (file_exists(public_path('storage/logo.webp'))) {
-                    Storage::disk('public')->delete('logo.webp');
-                }
+            if (Storage::disk('public')->exists('images/logo.webp') && empty($data['logo'])) {
+                Storage::disk('public')->delete('images/logo.webp');
             }
 
             if ($data['use_default_location']) {
@@ -278,12 +289,11 @@ class EditSetting extends Page implements HasForms
                 $data['default_city_id'] = $data['city_id'];
             }
 
-            Setting::updateOrCreate([], $data);
+            $sanitizeData = $this->sanitize($data, $this->includeFields);
 
-            Cache::put('settings', [
-                'theme_color' => $data['theme_color'],
-                'name' => $data['name'],
-            ]);
+            Setting::updateOrCreate([], $sanitizeData);
+
+            Cache::put('settings', $sanitizeData);
 
             Notification::make()
                 ->title(__('filament-panels::resources/pages/edit-record.notifications.saved.title'))
