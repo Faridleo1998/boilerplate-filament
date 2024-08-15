@@ -20,6 +20,7 @@
         "livewire/livewire": "^3.5",
         "nnjeim/world": "^1.1",
         "opcodesio/log-viewer": "^3.10",
+        "predis/predis": "^2.2",
         "psr/simple-cache": "^2.0",
         "pxlrbt/filament-environment-indicator": "^2.0",
         "ysfkaya/filament-phone-input": "^2.3"
