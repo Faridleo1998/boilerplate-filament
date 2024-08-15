@@ -27,8 +27,6 @@ return new class extends Migration
             $table->unsignedInteger('default_country_id')->nullable();
             $table->unsignedInteger('default_state_id')->nullable();
             $table->unsignedInteger('default_city_id')->nullable();
-
-            $table->timestamps();
         });
     }
 

@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Setting extends Model
 {
+    public $timestamps = false;
+
     protected $guarded = [
         'id',
         'created_at',
