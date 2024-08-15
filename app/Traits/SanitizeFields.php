@@ -8,18 +8,14 @@ trait SanitizeFields
     {
         $sanitizedData = [];
 
-        if ($mode === 'include') {
-            foreach ($fields as $field) {
-                $sanitizedData[$field] = $this->sanitizeValue($data[$field]) ?? null;
-            }
-        } elseif ($mode === 'exclude') {
-            foreach ($data as $key => $value) {
-                if (! in_array($key, $fields)) {
-                    $sanitizedData[$key] = $this->sanitizeValue($value);
-                } else {
-                    $sanitizedData[$key] = $value;
-                }
-            }
+        foreach ($data as $field => $value) {
+            $shouldSanitize = match ($mode) {
+                'include' => in_array($field, $fields),
+                'exclude' => ! in_array($field, $fields),
+                default => false,
+            };
+
+            $sanitizedData[$field] = $shouldSanitize ? $this->sanitizeValue($value) : $value;
         }
 
         return $sanitizedData;
