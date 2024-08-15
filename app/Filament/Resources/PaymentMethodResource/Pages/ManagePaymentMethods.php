@@ -18,6 +18,7 @@ class ManagePaymentMethods extends ManageRecords
 
     private array $includeFields = [
         'name',
+        'reference',
     ];
 
     protected function getHeaderActions(): array

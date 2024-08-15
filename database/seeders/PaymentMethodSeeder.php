@@ -11,11 +11,15 @@ class PaymentMethodSeeder extends Seeder
     {
         $paymentMethods = [
             'Efectivo',
-            'Bancolombia',
-            'Daviplata',
-            'Nequi',
-            'Transferencia',
         ];
+
+        if (app()->environment('local')) {
+            $paymentMethods = array_merge($paymentMethods, [
+                'Bancolombia',
+                'Nequi',
+                'Transferencia',
+            ]);
+        }
 
         foreach ($paymentMethods as $paymentMethod) {
             PaymentMethod::create([

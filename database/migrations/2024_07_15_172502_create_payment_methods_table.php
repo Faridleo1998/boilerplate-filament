@@ -11,7 +11,8 @@ return new class extends Migration
     {
         Schema::create('payment_methods', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
+            $table->string('name', 50)->unique();
+            $table->string('reference', 50)->nullable();
             $table->boolean('is_digital')->default(false);
             $table->boolean('status')->default(Status::ACTIVE);
             $table->integer('order_column')->nullable();

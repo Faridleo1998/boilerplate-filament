@@ -18,4 +18,5 @@ return [
     'phone' => 'Teléfono',
     'status' => 'Estado',
     'updated_at' => 'Fecha de actualización',
+    'reference' => 'Referencia',
 ];

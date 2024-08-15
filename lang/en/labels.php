@@ -18,4 +18,5 @@ return [
     'phone' => 'Phone',
     'status' => 'Status',
     'updated_at' => 'Updated at',
+    'reference' => 'Reference',
 ];

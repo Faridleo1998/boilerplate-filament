@@ -50,10 +50,14 @@ class PaymentMethodResource extends Resource implements HasShieldPermissions
                 Forms\Components\TextInput::make('name')
                     ->label(__('labels.name'))
                     ->required()
-                    ->maxLength(255)
+                    ->maxLength(50)
                     ->unique(ignoreRecord: true, modifyRuleUsing: function (Unique $rule) {
                         return $rule->whereNull('deleted_at');
                     }),
+                Forms\Components\TextInput::make('reference')
+                    ->label(__('labels.reference'))
+                    ->required()
+                    ->maxLength(50),
                 SpatieMediaLibraryFileUpload::make('logo')
                     ->collection('logo')
                     ->acceptedFileTypes(['image/png', 'image/jpg', 'image/jpeg', 'image/png', 'image/webp'])
@@ -93,6 +97,9 @@ class PaymentMethodResource extends Resource implements HasShieldPermissions
                     ->label(__('labels.name'))
                     ->searchable()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('reference')
+                    ->label(__('labels.reference'))
+                    ->searchable(),
                 SpatieMediaLibraryImageColumn::make('logo')
                     ->collection('logo'),
                 SpatieMediaLibraryImageColumn::make('qr')
