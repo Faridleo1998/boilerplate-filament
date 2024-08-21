@@ -2,23 +2,18 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\Setting as SettingModel;
 use Closure;
 use Filament\Support\Facades\FilamentColor;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 use Symfony\Component\HttpFoundation\Response;
+
+use function App\Helpers\get_company_info;
 
 class Setting
 {
     public function handle(Request $request, Closure $next): Response
     {
-        $settings = Cache::get('settings');
-
-        if (! $settings) {
-            $settings = SettingModel::first(['name', 'theme_color'])->toArray();
-            Cache::put('settings', $settings);
-        }
+        $settings = get_company_info(['theme_color', 'name']);
 
         if ($settings['theme_color']) {
             FilamentColor::register([
